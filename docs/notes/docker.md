@@ -3,6 +3,7 @@ Containerization technology has been around for longer before Docker popularized
 
 ### Docker - The Technology vs Docker - The Company
 The term Docker could refer to two things,
+
 1. Docker, Inc. - The company behind developing the product.
 2. [Docker](https://www.docker.com/) - One of the the products the company offers.
 
@@ -23,6 +24,7 @@ Docker also offers several pricing tiers with varied feature set. Check out [Doc
 
 ### From Linux to everywhere
 Docker traditionally was developed to work on the Linux OS, but slowly with Microsoft's contributions and close support with Docker, Inc. the platform is also available for Windows. This gave birth to 2 types of containers namely,
+
 1. Linux Containers - Runs on Windows, Mac and Linux
 2. Windows Containers - Runs on Windows
 
@@ -38,8 +40,6 @@ Docker traditionally was developed to work on the Linux OS, but slowly with Micr
     docker pull mcr.microsoft.com/powershell:lts-nanoserver-1903
     ```
 
-
-
 As containers share the kernel of the host operating system, Windows containers cannot run on a Mac or Linux. However, thanks to Microsoft's support for Linux, Windows containers as well as Linux containers can run on Windows.
 
 ---
@@ -49,6 +49,7 @@ As containers share the kernel of the host operating system, Windows containers 
 ---
 ## Docker Architecture
 Docker follows a simple client-server architecture along with a central repository to store and serve the images. Thus, there are 3 main components in a docker implementation.
+
 1. **Client**
 	- It connects to the docker engine to *send and receive commands and outputs*.
 	- It could be a *GUI Application* such as Docker Desktop (available for Windows and Mac) or a *CLI Tool* available for Docker CLI (Windows, Mac and Linux).
@@ -68,6 +69,7 @@ Communication between docker client and docker engine happens over *REST API*. D
 - The docker client provides a primary way for the users to interact with docker.
 - It provides an interface to manage container objects such as images, containers, volumes, networks and other plugins.
 - Docker client is available as
+
 	1. **Docker CLI** - Available in Windows, Mac and Linux.
 	2. **Docker Desktop** - Available on Windows and Mac.
 
@@ -76,6 +78,7 @@ The docker engine can be considered as the software that runs, manages and termi
 
 #### Monolithic Docker Engine from the past
 When docker was initially released, the docker engine had two components.
+
 1. **Docker Daemon or `dockerd`** - a singular daemon that contained the code for client, API, container runtime and more.
 2. **LXC** (Linux Containers)- An OS-level virtualization technology that allows creation and management of multiple isolated Linux virtual environments on a single control host
 
@@ -89,12 +92,14 @@ The next priority was to breakdown the monolithic docker daemon into microservic
 The [Open Container Initiative](https://opencontainers.org/) or the OCI is an open governance standard/structure for the purpose of creating industry standards around container formats and runtimes. OCI was established in 2015 by Docker and other industry leaders in the container industry.
 
 OCI currently contains 3 specifications
+
 1. **Runtime Specification (`runtime-spec`)**
 2. **Image specification (`image-spec`)**
 3. **Distribution Specification (`distribution-spec`)**
 
 #### Docker in its present state
 Currently (2023), Docker engine is made up of the following components.
+
 1. **docker daemon or `dockerd`**
 	- The docker daemon or `dockerd` provides an interface between the docker client and the core docker functionalities.
 	- The client communicates to `dockerd` via REST API and `dockerd` delegates the tasks and performs the actions as directed from the client.
@@ -124,6 +129,7 @@ Currently (2023), Docker engine is made up of the following components.
 [Docker Hub](https://hub.docker.com/) is the most popular image repository/registry to upload and manage docker images (OCI compatible images). It offers features such as image versions (tags), public and paid repositories and much more. There are several [pricing options](https://www.docker.com/pricing/) that offer varied support and feature set.
 
 There are other image repositories as well. Some of the other popular ones include
+
 - [Amazon Elastic Container Registry](https://aws.amazon.com/ecr/) by AWS.
 - [Azure Container Registry](https://azure.microsoft.com/en-in/products/container-registry/) by Azure.
 - [Container Registry](https://cloud.google.com/container-registry/) by Google Cloud (GCP)
@@ -133,17 +139,19 @@ There are other image repositories as well. Some of the other popular ones inclu
 Communication between the client, docker engine and the image repository occurs via REST API. This is implemented by the docker daemon.
 
 Docker can be set up in two ways
+
 1. Docker Client and Docker Engine on the same host - Communication over the IPC socket.
 2. Docker Client and Docker Engine on different hosts - communication over the network
 
 #### Client and Engine on Same Host
 In a default installation, the docker client and the docker engine are setup in the same host. In such cases the communication is made via the local IPC socket.
 
-:::note IPC Socket
-Unix Domain Socket (UDS) or Inter-Process Communication (IPC) Socket is a data communications endpoint for exchanging data between processes running on the same host operating system. It is a standard component of the POSIX operating systems.
+!!! note IPC Socket
 
-In an IPC Socket communication, all communication occurs entirely within the operating system kernel. 
-:::
+    Unix Domain Socket (UDS) or Inter-Process Communication (IPC) Socket is a data communications endpoint for exchanging data between processes running on the same host operating system. It is a standard component of the POSIX operating systems.
+
+    In an IPC Socket communication, all communication occurs entirely within the operating system kernel. 
+
 
 The socket can be found at `/var/run/docker.sock` on Linux and at `//./pipedocker_engine` on Windows. 
 
@@ -153,6 +161,7 @@ The socket can be found at `/var/run/docker.sock` on Linux and at `//./pipedocke
 ---
 ## Docker Objects
 Docker comprises of several entities referred commonly as objects. These are
+
 1. **[[Docker#Images|Images]]** - Templates that are used when containers are created and used.
 2. **[[Docker#Containers|Containers]]** - Running/operational instance of an image.
 3. **[[Docker#Volumes|Volumes]]** - Persistent storage for data created and stored during container runtimes.
@@ -231,6 +240,7 @@ ubuntu       latest    58db3edaf2be   4 weeks ago   77.8MB
 ```
 
 The `docker image ls` command allows to filter the output of the docker images returned based on certain criteria such as
+
 - **dangling (Accepts Boolean)** - Untagged images which usually occur when newer images are built with the tag that exists prior. Docker removes the tag from the older version of the image and attaches the tag to the newer image, thus leaving the older image without tags.
 - **before (Accepts image name/ID)** - Returns all the images created before the supplied image.
 - **since (Accepts image name/ID)** - Returns all the images created after the supplied image.
@@ -445,6 +455,7 @@ angry_shark
 ```
 
 An important note to take is that a container runs *as long as a main task is designated* to it. Without a process, the container terminates. Thus, here are a couple of things to keep in mind.
+
 1. Starting a container without a main process, terminates it immediately.
 2. Killing the main process of a running container, terminates the container.
 
@@ -464,10 +475,12 @@ docker start curious_mongoose
 ```
 
 A couple of important things to keep in mind when stopping and starting containers.
+
 1. Stopping and Starting a container does not destroy the data within it.
 2. However, if a container is terminated, the data is lost.
 
 Containers can be configured to automatically restart based on a restart policy. These restart policies are *container scoped*. Following are the restart policies currently available
+
 - `always` - Always restart containers
 - `unless-stopped` - Restart unless explicitly stopped
 - `on-failed` - Restart if the container fails and terminates
@@ -543,6 +556,7 @@ Check out the list of options that can be supplied from [Docker Docs](https://do
 
 ### Volumes
 By default, all data stored within a container's runtime storage is deleted when the container is terminated. Volumes are a way to manage that behavior to allow to create non-persistent and persistent storage for data as required. 
+
 1. **Non-Persistent Data**
 	- Default storage mode for containers
 	- The data is wiped as soon as the container is terminated.
@@ -553,6 +567,7 @@ By default, all data stored within a container's runtime storage is deleted when
 
 #### Non-Persistent Data
 Containers are considered to be immutable, meaning that they are read-only entities. However, a read-write layer is essential to run certain processes on containers. This is provided by means of storage drivers. Following are the storage drivers currently available.
+
 - Storage Drivers available on Linux
 	- `AUFS`
 	- `overlay2`
@@ -568,9 +583,9 @@ Volumes are the most common way to maintain persistent data within containers. F
 - **Volumes can be mapped to external storage** - Volumes can be mapped to external storage services both on-premises and on cloud, thus allowing them to share storage with other machines.
 - **Volumes can be mounted to multiple containers** - Volumes provide features to attach them to multiple containers at the same time.
 
-:::note Docker Volumes as First-Class Citizens
-Volumes in Docker are first-class citizens and have their own object in the API. Thus some sub-commands might mean different thing entirely in volumes as to what it would mean in the context of an image or a container.
-:::
+!!! note Docker Volumes as First-Class Citizens
+    
+    Volumes in Docker are first-class citizens and have their own object in the API. Thus some sub-commands might mean different thing entirely in volumes as to what it would mean in the context of an image or a container.
 
 ##### Create a Volume
 To create a new volume, use the following command
@@ -630,6 +645,7 @@ This produces an output with details about the volume.
 
 ##### Delete Volumes
 Docker Volumes can be deleted with the following commands
+
 1. `docker volume rm` - (*SINGLE ACTION*) Deletes specific volumes supplied by their volume names.
 2. `docker volume prune` - (*MASS ACTION*) Deletes all volumes that are currently not attached to a container or service.
 
@@ -672,23 +688,26 @@ Volume Plugins are a way to extend the persistent data functionality across mult
 docker plugin install purestorage/docker-plugin:latest --alias pure --grant-all-permissions
 ```
 
-:::danger Data Corruptions in Shared Volumes
-When writing data to a shared volume, there might be instances where the container holds the data in local buffer before committing to the shared volume. If multiple containers perform this delayed update, it is possible that the container that updates the data at the last might overwrite the existing data.
+!!! danger Data Corruptions in Shared Volumes
 
-To avoid this, the application or service that might access the shared volume must be developed in a way to circumvent the overwrite issue. 
-:::
+    When writing data to a shared volume, there might be instances where the container holds the data in local buffer before committing to the shared volume. If multiple containers perform this delayed update, it is possible that the container that updates the data at the last might overwrite the existing data.
+
+    To avoid this, the application or service that might access the shared volume must be developed in a way to circumvent the overwrite issue. 
+
 
 ### Networks
 
 
 #### Architecture and Implementation
 At its highest level, networking in docker is comprised of 3 major components.
+
 1. **Container Network Model (CNM)** - Provides the Specification of network implementation.
 2. **Libnetwork** - Implementation of CNM for Docker.
 3. **Drivers** - Offers support for network topologies.
 
 ##### Container Network Model (CNM)
 Container Network Model provides the design fundamentals for networking in docker. CNM can be divided into 3 main building blocks.
+
 1. **Sandboxes**
 	- Isolated network stacks, containing ethernet interfaces, ports, routing tables and DNS config.
 2. **Endpoints**
