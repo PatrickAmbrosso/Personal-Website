@@ -104,5 +104,7 @@ nav:
       # - Hobbies: hobbies.md
   - Digital Garden:
       - Welcome to the Garden: notes/garden-gate.md
+      - Technology:
+          - Docker: notes/docker.md
   - Contact:
       - Get in touch: site-navs/contact.md
