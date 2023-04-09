@@ -1,6 +1,6 @@
 site_name: PatFolio
-# repo_url: https://github.com/PatrickAmbrosso/PatFolio
-# repo_name: PatrickAmbrosso/PatFolio
+repo_url: https://github.com/PatrickAmbrosso/PatFolio
+repo_name: PatrickAmbrosso/PatFolio
 theme:
   name: material
   # logo: assets/Patrick-Ambrose-Logo.png
