@@ -83,9 +83,6 @@ markdown_extensions:
   - md_in_html
   - abbr
 
-plugins:
-  - tags
-
 extra_javascript:
   - javascripts/mathjax.js
   - https://polyfill.io/v3/polyfill.min.js?features=es6
@@ -93,4 +90,19 @@ extra_javascript:
 
 copyright: |
   &copy; 2023 <a href="https://github.com/PatrickAmbrosso"  target="_blank" rel="noopener">Patrick Ambrose (PatrickAmbrosso)</a>
-  
+
+
+nav:
+  - Home: index.md
+  - Patrick.exe:
+      - About: site-navs/about-me.md
+      # - Projects: projects.md
+      # - Skills Stack: skills-stack.md
+      # - Work: work-experience.md
+      # - Certifications: certifications.md
+      # - Education: education.md
+      # - Hobbies: hobbies.md
+  - Digital Garden:
+      - Welcome to the Garden: notes/garden-gate.md
+  - Contact:
+      - Get in touch: site-navs/contact.md
