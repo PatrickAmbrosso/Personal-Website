@@ -106,5 +106,6 @@ nav:
       - Welcome to the Garden: notes/garden-gate.md
       - Technology:
           - Docker: notes/docker.md
+          - Golang: notes/golang.md
   - Contact:
       - Get in touch: site-navs/contact.md
