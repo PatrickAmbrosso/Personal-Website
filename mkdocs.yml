@@ -12,9 +12,9 @@ theme:
     - navigation.sections
     - navigation.instant
     - navigation.path
-    - navigation.top            #
-    # - toc.integrate           # TOC inside navigation
-    - toc.follow                # TOC follows scrolling
+    - navigation.top
+    # - toc.integrate
+    - toc.follow
     - search.suggest
     - search.highlight
     - content.tooltips
