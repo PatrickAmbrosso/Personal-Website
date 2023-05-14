@@ -1,12 +1,46 @@
+# Site Details
 site_name: PatFolio
-repo_url: https://github.com/PatrickAmbrosso/PatFolio
+site_description: Personal portfolio and digital garden of Patrick Ambrose
+site_author: Patrick Ambrose
+site_url: https://patrickambrose.com
+
+# Github Repository details
 repo_name: PatrickAmbrosso/PatFolio
+repo_url: https://github.com/PatrickAmbrosso/PatFolio
+
+# Extra CSS & JS
+extra_javascript:
+  - Javascripts/mathjax.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+extra_css:
+  - Stylesheets/Extra.css
+
+# Theme Configurations
 theme:
   name: material
-  # logo: assets/Patrick-Ambrose-Logo.png
-  favicon: assets/Patrick-Ambrose-Favicon.png
+  # custom_dir: Overrides
+  # logo: Assets/Patrick-Ambrose-Logo.png
+  favicon: Assets/Patrick-Ambrose-Favicon.png
+  font:
+    text: Nunito Sans
+    code: JetBrains Mono
   icon:
     logo: material/alpha-p-box
+    admonition:
+      note: octicons/tag-16
+      abstract: octicons/checklist-16
+      info: octicons/info-16
+      tip: octicons/squirrel-16
+      success: octicons/check-16
+      question: octicons/question-16
+      warning: octicons/alert-16
+      failure: octicons/x-circle-16
+      danger: octicons/zap-16
+      bug: octicons/bug-16
+      example: octicons/beaker-16
+      quote: octicons/quote-16
   features:
     - navigation.tabs
     - navigation.sections
@@ -23,48 +57,34 @@ theme:
     - content.code.copy
   language: en
   palette:
+    # scheme: slate
+    # primary: purple
+    # accent: deep purple
     # Palette toggle for light mode
     - media: "(prefers-color-scheme: light)"
       scheme: default
       toggle:
         icon: material/weather-night
         name: Switch to dark mode
-      primary: deep purple
-      accent: amber 
+      primary: grey
+      accent: deep purple 
     # Palette toggle for dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate 
       toggle:
         icon: material/weather-sunny
         name: Switch to light mode    
-      primary: deep purple
-      accent: amber
+      primary: grey
+      accent: deep purple
 
-extra:
-  social:
-    - icon: fontawesome/solid/envelope
-      link: mailto:patrickambrosericky@gmail.com
-      name: Mail Patrick Ambrose
-    - icon: fontawesome/brands/instagram
-      link: https://www.instagram.com/patrickambrosso/
-      name: Patrick's Instagram Profile
-    - icon: fontawesome/brands/github
-      link: https://github.com/PatrickAmbrosso
-      name: Patrick's GitHub Profile
-    - icon: fontawesome/brands/twitter
-      link: https://twitter.com/PatrickAmbrosso
-      name: Patrick's Twitter Profile
-    - icon: fontawesome/brands/linkedin
-      link: https://www.linkedin.com/in/PatrickAmbrosso/
-      name: Patrick's LinkedIn Profile
-
+# Markdown Extensions
 markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
   - pymdownx.inlinehilite
   - pymdownx.snippets:
       auto_append:
-        - includes/abbreviations.md
+        - Includes/abbreviations.md
   - admonition
   - pymdownx.arithmatex:
       generic: true
@@ -83,29 +103,45 @@ markdown_extensions:
   - md_in_html
   - abbr
 
-extra_javascript:
-  - javascripts/mathjax.js
-  - https://polyfill.io/v3/polyfill.min.js?features=es6
-  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+# Plugins Activation
+plugins:
+  - search
+  - open-in-new-tab
 
+
+# Copyright Notice
 copyright: |
-  &copy; 2023 <a href="https://github.com/PatrickAmbrosso"  target="_blank" rel="noopener">Patrick Ambrose (PatrickAmbrosso)</a>
+  Copyright &copy; 2023 <a href="https://github.com/PatrickAmbrosso"  target="_blank" rel="noopener">Patrick Ambrose (PatrickAmbrosso)</a>
 
+# Footer Social Links
+extra:
+  social:
+    - icon: fontawesome/solid/envelope
+      link: mailto:patrickambrosericky@gmail.com
+      name: Mail Patrick Ambrose
+    - icon: fontawesome/brands/instagram
+      link: https://www.instagram.com/patrickambrosso/
+      name: Patrick's Instagram Profile
+    - icon: fontawesome/brands/github
+      link: https://github.com/PatrickAmbrosso
+      name: Patrick's GitHub Profile
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/PatrickAmbrosso
+      name: Patrick's Twitter Profile
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/in/PatrickAmbrosso/
+      name: Patrick's LinkedIn Profile
 
+# Site Navigation
 nav:
-  - Home: index.md
-  - Patrick.exe:
-      - About: site-navs/about-me.md
-      # - Projects: projects.md
-      # - Skills Stack: skills-stack.md
-      # - Work: work-experience.md
-      # - Certifications: certifications.md
-      # - Education: education.md
-      # - Hobbies: hobbies.md
+  - PatFolio: index.md
+  - About Me: About-Me.md
   - Digital Garden:
-      - Welcome to the Garden: notes/garden-gate.md
+      - Welcome to the Garden: Notes/Garden-Gate.md
       - Technology:
-          - Docker: notes/docker.md
-          - Golang: notes/golang.md
-  - Contact:
-      - Get in touch: site-navs/contact.md
+          - Docker: Notes/Docker.md
+          - Golang: Notes/GoLang.md
+  - Projects:
+    - MkDocs Documentation Site: Projects/MkDocs-Documentation-Site.md
+  - Learnings:
+    - Road to DevOps: Learnings/Road-to-DevOps.md

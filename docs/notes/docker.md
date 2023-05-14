@@ -146,7 +146,7 @@ Docker can be set up in two ways
 #### Client and Engine on Same Host
 In a default installation, the docker client and the docker engine are setup in the same host. In such cases the communication is made via the local IPC socket.
 
-!!! note IPC Socket
+!!! example IPC Socket
 
     Unix Domain Socket (UDS) or Inter-Process Communication (IPC) Socket is a data communications endpoint for exchanging data between processes running on the same host operating system. It is a standard component of the POSIX operating systems.
 

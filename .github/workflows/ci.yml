@@ -1,23 +1,36 @@
-name: ci 
+# GitHub Actions name
+name: Deploy MkDocs Site 
+
+# GitHub Action Trigger(s)
 on:
   workflow_dispatch:
-#   push:
-#     branches:
-#       - master 
-#       - main
+  push:
+    branches:
+      - master 
+      - main
+
+# Setting CI/CD Permissions
 permissions:
   contents: write
+
+# Required jobs to be run by the runners
 jobs:
   deploy:
+    # Selects the environment to run the job
     runs-on: ubuntu-latest
     steps:
+      # Checks out the code from GitHub (main branch)
       - uses: actions/checkout@v3
+      # Sets up Python environment for MkDocs
       - uses: actions/setup-python@v4
         with:
           python-version: 3.x
+      # Invokes caching for better future performance
       - uses: actions/cache@v2
         with:
           key: ${{ github.ref }}
           path: .cache
-      - run: pip install mkdocs-material 
+      # Install MkDocs-Material Python Plugin
+      - run: pip install mkdocs-material
+      # Publish site to GitHub Pages (gh-pages branch)
       - run: mkdocs gh-deploy --force
