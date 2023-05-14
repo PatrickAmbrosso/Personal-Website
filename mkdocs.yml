@@ -141,6 +141,7 @@ nav:
     - Technology:
       - Docker: Notes/Docker.md
       - Golang: Notes/GoLang.md
+      - Git: Notes/Git.md
   - Projects:
     - MkDocs Documentation Site: Projects/MkDocs-Documentation-Site.md
   - Learnings:
