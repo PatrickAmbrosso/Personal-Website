@@ -5,7 +5,7 @@ hide:
   - navigation
 ---
 ### My Work
-**Senior Executive**, IT and Digitization [Caplin Steriles Limited](www.caplinsteriles.net)
+**Senior Executive**, IT and Digitization [Caplin Steriles Limited](https://www.caplinsteriles.net)
 
 *August 2022 - Present*
 
