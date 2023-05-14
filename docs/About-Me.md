@@ -5,11 +5,7 @@ hide:
   - navigation
 ---
 ### My Work
-**Senior Executive**, IT and Digitization [Caplin Steriles Limited](https://www.caplinsteriles.net)
 
-*August 2022 - Present*
-
-- In my day job
 
 ---
 ### My Tech Stack
