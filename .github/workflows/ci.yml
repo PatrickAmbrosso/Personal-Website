@@ -30,7 +30,7 @@ jobs:
         with:
           key: ${{ github.ref }}
           path: .cache
-      # Install MkDocs-Material Python Plugin
-      - run: pip install mkdocs-material
+      # Install Python dependencies
+      - run: pip install -r requirements.txt
       # Publish site to GitHub Pages (gh-pages branch)
       - run: mkdocs gh-deploy --force
