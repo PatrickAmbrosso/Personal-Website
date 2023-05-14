@@ -137,10 +137,10 @@ nav:
   - PatFolio: index.md
   - About Me: About-Me.md
   - Digital Garden:
-      - Welcome to the Garden: Notes/Garden-Gate.md
-      - Technology:
-          - Docker: Notes/Docker.md
-          - Golang: Notes/GoLang.md
+    - Welcome to the Garden: Notes/Garden-Gate.md
+    - Technology:
+      - Docker: Notes/Docker.md
+      - Golang: Notes/GoLang.md
   - Projects:
     - MkDocs Documentation Site: Projects/MkDocs-Documentation-Site.md
   - Learnings:
