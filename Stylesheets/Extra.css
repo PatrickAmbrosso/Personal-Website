@@ -1,0 +1,203 @@
+/* Setting variables for color palettes */
+:root {
+    /* Primary Palette - Default Color Scheme (Light Mode) */
+    --default-scheme-primary-highlight: #8f61eb;
+    --default-scheme-secondary-highlight: #FECA57;
+
+    /* Accent Palette  - Default Color Scheme (Light Mode) */
+    --Purple-1: #3a215e;
+    --Purple-2: #552d89;
+    --Purple-3: #6340bc;
+    --Purple-4: #80489C;
+    --Purple-5: #966ccc;
+    --Purple-6: #bf7ecb;
+
+    /* Primary Palette - Slate Color Scheme (Dark Mode) */
+    --primary-purple: #8f61eb;
+    --primary-yellow: #966ccc;
+
+    /* Accent Palette  - Slate Color Scheme (Dark Mode) */
+    --Purple-1: #3a215e;
+    --Purple-2: #552d89;
+    --Purple-3: #6340bc;
+    --Purple-4: #80489C;
+    --Purple-5: #966ccc;
+    --Purple-6: #bf7ecb;
+
+    /* Slate Color Scheme (Dark Mode) Customizations */
+    --slate-scheme-primary-highlight: #B689B2;
+    --slate-scheme-secondary-highlight: #D982B5;
+    --slate-scheme-bold-text: #F0C389;
+    --slate-scheme-italic-text: #5EA2FF;
+    --slate-scheme-link-text: #966ccc;
+    --slate-scheme-header-level-1: #cccccc;
+    --slate-scheme-header-level-2: #9A7BDB;
+    --slate-scheme-header-level-3: #D982B5;
+    --slate-scheme-header-level-4: #cccccc;
+    --slate-scheme-header-level-5: #cccccc;
+    --slate-scheme-header-level-6: #cccccc;
+}
+
+/* -------------------------------------------------------------- */
+
+/* Slate Color Scheme - Set Color Overrides for primary and accent colors */
+[data-md-color-scheme="slate"] {
+    --md-primary-fg-color: #2B2C2F;
+    --md-default-bg-color: #1E1F20;
+    --md-typeset-a-color: var(--slate-scheme-primary-highlight);
+    --md-accent-fg-color: var(--slate-scheme-secondary-highlight);
+}
+
+/* Set Color for Italics >>>>>>>>>>>>>>>>>>>>> */
+[data-md-color-scheme="slate"] em {
+    color: var(--slate-scheme-italic-text);
+}
+
+/* Set Color For Bold >>>>>>>>>>>>>>>>>>>>>>>> */
+[data-md-color-scheme="slate"] strong {
+    color: var(--slate-scheme-bold-text);
+}
+
+/* Set Color For Bold >>>>>>>>>>>>>>>>>>>>>>>> */
+
+
+/* Override Dark-Mode Background Color -------------------------- */
+[data-md-color-scheme="slate"] .md-container {
+    background-color: #1e1f20;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .footnote {
+    color: #ccc;
+}
+
+[data-md-color-scheme="slate"] body {
+    color: #ccc;
+}
+
+/* code blocks */
+[data-md-color-scheme="slate"] .md-typeset pre {
+    color: #f8f8f2;
+    background-color: #2b2c2f;
+}
+
+[data-md-color-scheme="slate"] .md-typeset code {
+    color: #f8f8f2;
+    background-color: #2b2c2f;
+}
+
+[data-md-color-scheme="slate"] .md-nav__link[data-md-state=blur] {
+    color: rgba(230, 230, 230, 0.54);
+}
+
+[data-md-color-scheme="slate"] .highlight span.filename {
+    background-color: #2B2C2F;
+}
+
+[data-md-color-scheme="slate"] a footnote-ref::before {
+    border-color: #c7bec6;
+}
+
+[data-md-color-scheme="slate"] a footnote-ref::before {
+    color: #c7bec6;
+}
+
+/* Footer Formatting ------------------------------------------------------------ */
+[data-md-color-scheme="slate"] .md-footer {
+    background: #2f2b2d;
+}
+
+[data-md-color-scheme="slate"] .md-footer-copyright {
+    color: #666;
+}
+
+[data-md-color-scheme="slate"] .md-footer-nav {
+    background: #2f2b2b;
+}
+
+/* ------------------------------------------------------------------------------ */
+
+[data-md-color-scheme="slate"] .md-nav__title .md-nav__button {
+    width: 22.4rem;
+}
+
+[data-md-color-scheme="slate"] .md-nav__title {
+    color: white;
+}
+
+/* Override link formatting */
+[data-md-color-scheme="slate"] .md-typeset a {
+    color: var(--slate-scheme-link-text);
+}
+
+/* Set color for the active item in navigation */
+[data-md-color-scheme="slate"] .md-nav__link:active,
+[data-md-color-scheme="slate"] .md-nav__link--active {
+    color: var(--primary-yellow);
+}
+
+[data-md-color-scheme="slate"] html body .md-typeset .headerlink {
+    color: #c7bec6;
+}
+
+/* Header Decorations - Slate Color Scheme */
+
+[data-md-color-scheme="slate"] .md-typeset h1 {
+    color: var(--slate-scheme-header-level-1);
+    font-weight: 500;
+}
+
+[data-md-color-scheme="slate"] .md-typeset h2 {
+    color: var(--slate-scheme-header-level-2);
+    font-weight: 500;
+}
+
+[data-md-color-scheme="slate"] .md-typeset h3 {
+    color: var(--slate-scheme-header-level-3);
+    font-weight: 400;
+}
+
+[data-md-color-scheme="slate"] .md-typeset h4 {
+    color: var(--slate-scheme-header-level-4);
+}
+
+[data-md-color-scheme="slate"] .md-typeset h5 {
+    color: var(--slate-scheme-header-level-5);
+}
+
+[data-md-color-scheme="slate"] .md-typeset h6 {
+    color: var(--slate-scheme-header-level-6);
+}
+
+/* --------------------------------------------------  */
+
+
+/* Button Formatting */
+.md-button {
+    padding: 10px;
+    margin: 20px 20px 20px 0px;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .md-button {
+    border-radius: .1rem;
+}
+
+
+/* ---------------------------------------------------- */
+
+/* Tabbed Interface Customizations */
+.md-typeset .tabbed-labels>label {
+    border-bottom: .1rem solid #0000;
+    border-radius: .1rem .1rem 0 0;
+    color: var(--slate-scheme-primary-highlight);
+    cursor: pointer;
+    flex-shrink: 0;
+    font-size: .75rem;
+    font-weight: 700;
+    padding: .78125em 1.25em .625em;
+    scroll-margin-inline-start: 1rem;
+    transition: background-color .25s, color .25s;
+    white-space: nowrap;
+    width: auto;
+}
+
+/* ---------------------------------------------------- */

@@ -1,0 +1,2766 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Personal portfolio and digital garden of Patrick Ambrose">
+      
+      
+        <meta name="author" content="Patrick Ambrose">
+      
+      
+        <link rel="canonical" href="https://patrickambrose.com/Notes/Docker/">
+      
+      
+        <link rel="prev" href="../Garden-Gate/">
+      
+      
+        <link rel="next" href="../GoLang/">
+      
+      <link rel="icon" href="../../Assets/Patrick-Ambrose-Favicon.png">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.12">
+    
+    
+      
+        <title>Docker - PatFolio</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.85bb2934.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.a6bdf11c.min.css">
+      
+      
+  
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+  
+  <style>:root{--md-admonition-icon--note:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M1 7.775V2.75C1 1.784 1.784 1 2.75 1h5.025c.464 0 .91.184 1.238.513l6.25 6.25a1.75 1.75 0 0 1 0 2.474l-5.026 5.026a1.75 1.75 0 0 1-2.474 0l-6.25-6.25A1.752 1.752 0 0 1 1 7.775Zm1.5 0c0 .066.026.13.073.177l6.25 6.25a.25.25 0 0 0 .354 0l5.025-5.025a.25.25 0 0 0 0-.354l-6.25-6.25a.25.25 0 0 0-.177-.073H2.75a.25.25 0 0 0-.25.25ZM6 5a1 1 0 1 1 0 2 1 1 0 0 1 0-2Z"/></svg>');--md-admonition-icon--abstract:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.5 1.75v11.5c0 .138.112.25.25.25h3.17a.75.75 0 0 1 0 1.5H2.75A1.75 1.75 0 0 1 1 13.25V1.75C1 .784 1.784 0 2.75 0h8.5C12.216 0 13 .784 13 1.75v7.736a.75.75 0 0 1-1.5 0V1.75a.25.25 0 0 0-.25-.25h-8.5a.25.25 0 0 0-.25.25Zm13.274 9.537v-.001l-4.557 4.45a.75.75 0 0 1-1.055-.008l-1.943-1.95a.75.75 0 0 1 1.062-1.058l1.419 1.425 4.026-3.932a.75.75 0 1 1 1.048 1.074ZM4.75 4h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM4 7.75A.75.75 0 0 1 4.75 7h2a.75.75 0 0 1 0 1.5h-2A.75.75 0 0 1 4 7.75Z"/></svg>');--md-admonition-icon--info:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"/></svg>');--md-admonition-icon--tip:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.499.75a.75.75 0 0 1 1.5 0v.996C5.9 2.903 6.793 3.65 7.662 4.376l.24.202c-.036-.694.055-1.422.426-2.163C9.1.873 10.794-.045 12.622.26 14.408.558 16 1.94 16 4.25c0 1.278-.954 2.575-2.44 2.734l.146.508.065.22c.203.701.412 1.455.476 2.226.142 1.707-.4 3.03-1.487 3.898C11.714 14.671 10.27 15 8.75 15h-6a.75.75 0 0 1 0-1.5h1.376a4.484 4.484 0 0 1-.563-1.191 3.835 3.835 0 0 1-.05-2.063 4.647 4.647 0 0 1-2.025-.293.75.75 0 0 1 .525-1.406c1.357.507 2.376-.006 2.698-.318l.009-.01a.747.747 0 0 1 1.06 0 .748.748 0 0 1-.012 1.074c-.912.92-.992 1.835-.768 2.586.221.74.745 1.337 1.196 1.621H8.75c1.343 0 2.398-.296 3.074-.836.635-.507 1.036-1.31.928-2.602-.05-.603-.216-1.224-.422-1.93l-.064-.221c-.12-.407-.246-.84-.353-1.29a2.425 2.425 0 0 1-.507-.441 3.075 3.075 0 0 1-.633-1.248.75.75 0 0 1 1.455-.364c.046.185.144.436.31.627.146.168.353.305.712.305.738 0 1.25-.615 1.25-1.25 0-1.47-.95-2.315-2.123-2.51-1.172-.196-2.227.387-2.706 1.345-.46.92-.27 1.774.019 3.062l.042.19a.884.884 0 0 1 .01.05c.348.443.666.949.94 1.553a.75.75 0 1 1-1.365.62c-.553-1.217-1.32-1.94-2.3-2.768L6.7 5.527c-.814-.68-1.75-1.462-2.692-2.619a3.737 3.737 0 0 0-1.023.88c-.406.495-.663 1.036-.722 1.508.116.122.306.21.591.239.388.038.797-.06 1.032-.19a.75.75 0 0 1 .728 1.31c-.515.287-1.23.439-1.906.373-.682-.067-1.473-.38-1.879-1.193L.75 5.677V5.5c0-.984.48-1.94 1.077-2.664.46-.559 1.05-1.055 1.673-1.353V.75Z"/></svg>');--md-admonition-icon--success:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"/></svg>');--md-admonition-icon--question:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.92 6.085h.001a.749.749 0 1 1-1.342-.67c.169-.339.436-.701.849-.977C6.845 4.16 7.369 4 8 4a2.756 2.756 0 0 1 1.637.525c.503.377.863.965.863 1.725 0 .448-.115.83-.329 1.15-.205.307-.47.513-.692.662-.109.072-.22.138-.313.195l-.006.004a6.24 6.24 0 0 0-.26.16.952.952 0 0 0-.276.245.75.75 0 0 1-1.248-.832c.184-.264.42-.489.692-.661.103-.067.207-.132.313-.195l.007-.004c.1-.061.182-.11.258-.161a.969.969 0 0 0 .277-.245C8.96 6.514 9 6.427 9 6.25a.612.612 0 0 0-.262-.525A1.27 1.27 0 0 0 8 5.5c-.369 0-.595.09-.74.187a1.01 1.01 0 0 0-.34.398ZM9 11a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"/></svg>');--md-admonition-icon--warning:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M6.457 1.047c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0 1 14.082 15H1.918a1.75 1.75 0 0 1-1.543-2.575Zm1.763.707a.25.25 0 0 0-.44 0L1.698 13.132a.25.25 0 0 0 .22.368h12.164a.25.25 0 0 0 .22-.368Zm.53 3.996v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 11a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"/></svg>');--md-admonition-icon--failure:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343h-.001a8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746Zm1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275ZM6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.749.749 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L6.94 8 4.97 6.03a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018Z"/></svg>');--md-admonition-icon--danger:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M9.504.43a1.516 1.516 0 0 1 2.437 1.713L10.415 5.5h2.123c1.57 0 2.346 1.909 1.22 3.004l-7.34 7.142a1.249 1.249 0 0 1-.871.354h-.302a1.25 1.25 0 0 1-1.157-1.723L5.633 10.5H3.462c-1.57 0-2.346-1.909-1.22-3.004L9.503.429Zm1.047 1.074L3.286 8.571A.25.25 0 0 0 3.462 9H6.75a.75.75 0 0 1 .694 1.034l-1.713 4.188 6.982-6.793A.25.25 0 0 0 12.538 7H9.25a.75.75 0 0 1-.683-1.06l2.008-4.418.003-.006a.036.036 0 0 0-.004-.009l-.006-.006-.008-.001c-.003 0-.006.002-.009.004Z"/></svg>');--md-admonition-icon--bug:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M4.72.22a.75.75 0 0 1 1.06 0l1 .999a3.488 3.488 0 0 1 2.441 0l.999-1a.748.748 0 0 1 1.265.332.75.75 0 0 1-.205.729l-.775.776c.616.63.995 1.493.995 2.444v.327c0 .1-.009.197-.025.292.408.14.764.392 1.029.722l1.968-.787a.75.75 0 0 1 .556 1.392L13 7.258V9h2.25a.75.75 0 0 1 0 1.5H13v.5c0 .409-.049.806-.141 1.186l2.17.868a.75.75 0 0 1-.557 1.392l-2.184-.873A4.997 4.997 0 0 1 8 16a4.997 4.997 0 0 1-4.288-2.427l-2.183.873a.75.75 0 0 1-.558-1.392l2.17-.868A5.036 5.036 0 0 1 3 11v-.5H.75a.75.75 0 0 1 0-1.5H3V7.258L.971 6.446a.75.75 0 0 1 .558-1.392l1.967.787c.265-.33.62-.583 1.03-.722a1.677 1.677 0 0 1-.026-.292V4.5c0-.951.38-1.814.995-2.444L4.72 1.28a.75.75 0 0 1 0-1.06Zm.53 6.28a.75.75 0 0 0-.75.75V11a3.5 3.5 0 1 0 7 0V7.25a.75.75 0 0 0-.75-.75ZM6.173 5h3.654A.172.172 0 0 0 10 4.827V4.5a2 2 0 1 0-4 0v.327c0 .096.077.173.173.173Z"/></svg>');--md-admonition-icon--example:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M5 5.782V2.5h-.25a.75.75 0 0 1 0-1.5h6.5a.75.75 0 0 1 0 1.5H11v3.282l3.666 5.76C15.619 13.04 14.543 15 12.767 15H3.233c-1.776 0-2.852-1.96-1.899-3.458Zm-2.4 6.565a.75.75 0 0 0 .633 1.153h9.534a.75.75 0 0 0 .633-1.153L12.225 10.5h-8.45ZM9.5 2.5h-3V6c0 .143-.04.283-.117.403L4.73 9h6.54L9.617 6.403A.746.746 0 0 1 9.5 6Z"/></svg>');--md-admonition-icon--quote:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M1.75 2.5h10.5a.75.75 0 0 1 0 1.5H1.75a.75.75 0 0 1 0-1.5Zm4 5h8.5a.75.75 0 0 1 0 1.5h-8.5a.75.75 0 0 1 0-1.5Zm0 5h8.5a.75.75 0 0 1 0 1.5h-8.5a.75.75 0 0 1 0-1.5ZM2.5 7.75v6a.75.75 0 0 1-1.5 0v-6a.75.75 0 0 1 1.5 0Z"/></svg>');}</style>
+
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Nunito Sans";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../Stylesheets/Extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="grey" data-md-color-accent="deep-purple">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#introduction-to-docker" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="PatFolio" class="md-header__button md-logo" aria-label="PatFolio" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 7v10h2v-4h2a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2H9m2 2h2v2h-2V9M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            PatFolio
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Docker
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+          
+            
+            
+            
+            <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="grey" data-md-color-accent="deep-purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+            
+              <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3 3.19.09m3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95 2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31Z"/></svg>
+              </label>
+            
+          
+            
+            
+            
+            <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="grey" data-md-color-accent="deep-purple"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+            
+              <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5c-.84 0-1.65.15-2.39.42L12 2M3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29L3.34 7m.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14L3.36 17M20.65 7l-1.77 3.79a7.023 7.023 0 0 0-2.38-4.15l4.15.36m-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29L20.64 17M12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44L12 22Z"/></svg>
+              </label>
+            
+          
+        </form>
+      
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/PatrickAmbrosso/PatFolio" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    PatrickAmbrosso/PatFolio
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../.." class="md-tabs__link">
+      PatFolio
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../../About-Me/" class="md-tabs__link">
+      About Me
+    </a>
+  </li>
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../Garden-Gate/" class="md-tabs__link md-tabs__link--active">
+        Digital Garden
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../Projects/MkDocs-Documentation-Site/" class="md-tabs__link">
+        Projects
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../Learnings/Road-to-DevOps/" class="md-tabs__link">
+        Learnings
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="PatFolio" class="md-nav__button md-logo" aria-label="PatFolio" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 7v10h2v-4h2a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2H9m2 2h2v2h-2V9M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/></svg>
+
+    </a>
+    PatFolio
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/PatrickAmbrosso/PatFolio" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    PatrickAmbrosso/PatFolio
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        PatFolio
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../About-Me/" class="md-nav__link">
+        About Me
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          Digital Garden
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Digital Garden
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Garden-Gate/" class="md-nav__link">
+        Welcome to the Garden
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+          Technology
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_3_2">
+          <span class="md-nav__icon md-icon"></span>
+          Technology
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Docker
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Docker
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction-to-docker" class="md-nav__link">
+    Introduction to Docker
+  </a>
+  
+    <nav class="md-nav" aria-label="Introduction to Docker">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#docker-the-technology-vs-docker-the-company" class="md-nav__link">
+    Docker - The Technology vs Docker - The Company
+  </a>
+  
+    <nav class="md-nav" aria-label="Docker - The Technology vs Docker - The Company">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-brief-history-about-docker-inc" class="md-nav__link">
+    A brief history about Docker, Inc.
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-brief-history-about-docker" class="md-nav__link">
+    A brief history about Docker
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#from-linux-to-everywhere" class="md-nav__link">
+    From Linux to everywhere
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#docker-installation" class="md-nav__link">
+    Docker Installation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#docker-architecture" class="md-nav__link">
+    Docker Architecture
+  </a>
+  
+    <nav class="md-nav" aria-label="Docker Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#client" class="md-nav__link">
+    Client
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#engine" class="md-nav__link">
+    Engine
+  </a>
+  
+    <nav class="md-nav" aria-label="Engine">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#monolithic-docker-engine-from-the-past" class="md-nav__link">
+    Monolithic Docker Engine from the past
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#open-container-initiative-oci" class="md-nav__link">
+    Open Container Initiative (OCI)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docker-in-its-present-state" class="md-nav__link">
+    Docker in its present state
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#image-repositoryregistry" class="md-nav__link">
+    Image Repository/Registry
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#communication-via-rest-api" class="md-nav__link">
+    Communication via REST API
+  </a>
+  
+    <nav class="md-nav" aria-label="Communication via REST API">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#client-and-engine-on-same-host" class="md-nav__link">
+    Client and Engine on Same Host
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#client-and-engine-on-different-host" class="md-nav__link">
+    Client and Engine on Different Host
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#docker-objects" class="md-nav__link">
+    Docker Objects
+  </a>
+  
+    <nav class="md-nav" aria-label="Docker Objects">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#images" class="md-nav__link">
+    Images
+  </a>
+  
+    <nav class="md-nav" aria-label="Images">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pulling-images" class="md-nav__link">
+    Pulling Images
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#listing-the-locally-stored-images" class="md-nav__link">
+    Listing the locally stored Images
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#image-naming" class="md-nav__link">
+    Image Naming
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#searching-the-repository" class="md-nav__link">
+    Searching the repository
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#made-up-of-layers" class="md-nav__link">
+    Made up of Layers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#content-hashes-digests-and-immutability" class="md-nav__link">
+    Content Hashes, Digests and Immutability
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deleting-images" class="md-nav__link">
+    Deleting Images
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#containers" class="md-nav__link">
+    Containers
+  </a>
+  
+    <nav class="md-nav" aria-label="Containers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#run-containers-basics" class="md-nav__link">
+    Run Containers (basics)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#listing-containers" class="md-nav__link">
+    Listing Containers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stopping-running-containers" class="md-nav__link">
+    Stopping Running Containers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#start-a-stopped-container" class="md-nav__link">
+    Start a Stopped Container
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#removingdeleting-containers" class="md-nav__link">
+    Removing/Deleting Containers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#accessing-the-container-logs" class="md-nav__link">
+    Accessing the Container Logs
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#running-containers-more-options" class="md-nav__link">
+    Running Containers (more options)
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#volumes" class="md-nav__link">
+    Volumes
+  </a>
+  
+    <nav class="md-nav" aria-label="Volumes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#non-persistent-data" class="md-nav__link">
+    Non-Persistent Data
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#persistent-data" class="md-nav__link">
+    Persistent Data
+  </a>
+  
+    <nav class="md-nav" aria-label="Persistent Data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create-a-volume" class="md-nav__link">
+    Create a Volume
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#listing-all-volumes" class="md-nav__link">
+    Listing all Volumes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inspect-volumes" class="md-nav__link">
+    Inspect Volumes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#attach-volumes" class="md-nav__link">
+    Attach Volumes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete-volumes" class="md-nav__link">
+    Delete Volumes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mount-volumes-to-containers" class="md-nav__link">
+    Mount Volumes to Containers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-volume-plugins" class="md-nav__link">
+    Using Volume Plugins
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#networks" class="md-nav__link">
+    Networks
+  </a>
+  
+    <nav class="md-nav" aria-label="Networks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#architecture-and-implementation" class="md-nav__link">
+    Architecture and Implementation
+  </a>
+  
+    <nav class="md-nav" aria-label="Architecture and Implementation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#container-network-model-cnm" class="md-nav__link">
+    Container Network Model (CNM)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#libnetwork" class="md-nav__link">
+    Libnetwork
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#network-drivers" class="md-nav__link">
+    Network Drivers
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#working-with-networks" class="md-nav__link">
+    Working with Networks
+  </a>
+  
+    <nav class="md-nav" aria-label="Working with Networks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create-networks" class="md-nav__link">
+    Create Networks
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#listing-all-networks" class="md-nav__link">
+    Listing All Networks
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inspect-networks" class="md-nav__link">
+    Inspect Networks
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete-networks" class="md-nav__link">
+    Delete Networks
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#plugins" class="md-nav__link">
+    Plugins
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#build-images-with-dockerfile" class="md-nav__link">
+    Build Images with Dockerfile
+  </a>
+  
+    <nav class="md-nav" aria-label="Build Images with Dockerfile">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dockerfile-syntax-reference" class="md-nav__link">
+    Dockerfile Syntax Reference
+  </a>
+  
+    <nav class="md-nav" aria-label="Dockerfile Syntax Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#structure-and-formatting" class="md-nav__link">
+    Structure and Formatting
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dockerfile-instructions-and-arguments" class="md-nav__link">
+    Dockerfile Instructions and Arguments
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#building-the-images" class="md-nav__link">
+    Building the Images
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pushing-the-images-to-a-registry" class="md-nav__link">
+    Pushing the Images to a Registry
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deployment-with-docker-compose" class="md-nav__link">
+    Deployment with Docker Compose
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#container-orchestration-with-docker-swarm" class="md-nav__link">
+    Container Orchestration with Docker Swarm
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#networking" class="md-nav__link">
+    Networking
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#overlay-networking" class="md-nav__link">
+    Overlay Networking
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#persisting-data-with-volumes" class="md-nav__link">
+    Persisting Data with Volumes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#app-deployment-with-stacks" class="md-nav__link">
+    App Deployment with Stacks
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#focussing-on-security" class="md-nav__link">
+    Focussing on Security
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#building-images-with-dockerfile" class="md-nav__link">
+    Building Images with Dockerfile
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../GoLang/" class="md-nav__link">
+        Golang
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Git/" class="md-nav__link">
+        Git
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          Projects
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Projects
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Projects/MkDocs-Documentation-Site/" class="md-nav__link">
+        MkDocs Documentation Site
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          Learnings
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Learnings
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Learnings/Road-to-DevOps/" class="md-nav__link">
+        Road to DevOps
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction-to-docker" class="md-nav__link">
+    Introduction to Docker
+  </a>
+  
+    <nav class="md-nav" aria-label="Introduction to Docker">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#docker-the-technology-vs-docker-the-company" class="md-nav__link">
+    Docker - The Technology vs Docker - The Company
+  </a>
+  
+    <nav class="md-nav" aria-label="Docker - The Technology vs Docker - The Company">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-brief-history-about-docker-inc" class="md-nav__link">
+    A brief history about Docker, Inc.
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-brief-history-about-docker" class="md-nav__link">
+    A brief history about Docker
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#from-linux-to-everywhere" class="md-nav__link">
+    From Linux to everywhere
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#docker-installation" class="md-nav__link">
+    Docker Installation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#docker-architecture" class="md-nav__link">
+    Docker Architecture
+  </a>
+  
+    <nav class="md-nav" aria-label="Docker Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#client" class="md-nav__link">
+    Client
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#engine" class="md-nav__link">
+    Engine
+  </a>
+  
+    <nav class="md-nav" aria-label="Engine">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#monolithic-docker-engine-from-the-past" class="md-nav__link">
+    Monolithic Docker Engine from the past
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#open-container-initiative-oci" class="md-nav__link">
+    Open Container Initiative (OCI)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docker-in-its-present-state" class="md-nav__link">
+    Docker in its present state
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#image-repositoryregistry" class="md-nav__link">
+    Image Repository/Registry
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#communication-via-rest-api" class="md-nav__link">
+    Communication via REST API
+  </a>
+  
+    <nav class="md-nav" aria-label="Communication via REST API">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#client-and-engine-on-same-host" class="md-nav__link">
+    Client and Engine on Same Host
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#client-and-engine-on-different-host" class="md-nav__link">
+    Client and Engine on Different Host
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#docker-objects" class="md-nav__link">
+    Docker Objects
+  </a>
+  
+    <nav class="md-nav" aria-label="Docker Objects">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#images" class="md-nav__link">
+    Images
+  </a>
+  
+    <nav class="md-nav" aria-label="Images">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pulling-images" class="md-nav__link">
+    Pulling Images
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#listing-the-locally-stored-images" class="md-nav__link">
+    Listing the locally stored Images
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#image-naming" class="md-nav__link">
+    Image Naming
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#searching-the-repository" class="md-nav__link">
+    Searching the repository
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#made-up-of-layers" class="md-nav__link">
+    Made up of Layers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#content-hashes-digests-and-immutability" class="md-nav__link">
+    Content Hashes, Digests and Immutability
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deleting-images" class="md-nav__link">
+    Deleting Images
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#containers" class="md-nav__link">
+    Containers
+  </a>
+  
+    <nav class="md-nav" aria-label="Containers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#run-containers-basics" class="md-nav__link">
+    Run Containers (basics)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#listing-containers" class="md-nav__link">
+    Listing Containers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stopping-running-containers" class="md-nav__link">
+    Stopping Running Containers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#start-a-stopped-container" class="md-nav__link">
+    Start a Stopped Container
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#removingdeleting-containers" class="md-nav__link">
+    Removing/Deleting Containers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#accessing-the-container-logs" class="md-nav__link">
+    Accessing the Container Logs
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#running-containers-more-options" class="md-nav__link">
+    Running Containers (more options)
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#volumes" class="md-nav__link">
+    Volumes
+  </a>
+  
+    <nav class="md-nav" aria-label="Volumes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#non-persistent-data" class="md-nav__link">
+    Non-Persistent Data
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#persistent-data" class="md-nav__link">
+    Persistent Data
+  </a>
+  
+    <nav class="md-nav" aria-label="Persistent Data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create-a-volume" class="md-nav__link">
+    Create a Volume
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#listing-all-volumes" class="md-nav__link">
+    Listing all Volumes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inspect-volumes" class="md-nav__link">
+    Inspect Volumes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#attach-volumes" class="md-nav__link">
+    Attach Volumes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete-volumes" class="md-nav__link">
+    Delete Volumes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mount-volumes-to-containers" class="md-nav__link">
+    Mount Volumes to Containers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-volume-plugins" class="md-nav__link">
+    Using Volume Plugins
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#networks" class="md-nav__link">
+    Networks
+  </a>
+  
+    <nav class="md-nav" aria-label="Networks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#architecture-and-implementation" class="md-nav__link">
+    Architecture and Implementation
+  </a>
+  
+    <nav class="md-nav" aria-label="Architecture and Implementation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#container-network-model-cnm" class="md-nav__link">
+    Container Network Model (CNM)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#libnetwork" class="md-nav__link">
+    Libnetwork
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#network-drivers" class="md-nav__link">
+    Network Drivers
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#working-with-networks" class="md-nav__link">
+    Working with Networks
+  </a>
+  
+    <nav class="md-nav" aria-label="Working with Networks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create-networks" class="md-nav__link">
+    Create Networks
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#listing-all-networks" class="md-nav__link">
+    Listing All Networks
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inspect-networks" class="md-nav__link">
+    Inspect Networks
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete-networks" class="md-nav__link">
+    Delete Networks
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#plugins" class="md-nav__link">
+    Plugins
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#build-images-with-dockerfile" class="md-nav__link">
+    Build Images with Dockerfile
+  </a>
+  
+    <nav class="md-nav" aria-label="Build Images with Dockerfile">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dockerfile-syntax-reference" class="md-nav__link">
+    Dockerfile Syntax Reference
+  </a>
+  
+    <nav class="md-nav" aria-label="Dockerfile Syntax Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#structure-and-formatting" class="md-nav__link">
+    Structure and Formatting
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dockerfile-instructions-and-arguments" class="md-nav__link">
+    Dockerfile Instructions and Arguments
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#building-the-images" class="md-nav__link">
+    Building the Images
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pushing-the-images-to-a-registry" class="md-nav__link">
+    Pushing the Images to a Registry
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deployment-with-docker-compose" class="md-nav__link">
+    Deployment with Docker Compose
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#container-orchestration-with-docker-swarm" class="md-nav__link">
+    Container Orchestration with Docker Swarm
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#networking" class="md-nav__link">
+    Networking
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#overlay-networking" class="md-nav__link">
+    Overlay Networking
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#persisting-data-with-volumes" class="md-nav__link">
+    Persisting Data with Volumes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#app-deployment-with-stacks" class="md-nav__link">
+    App Deployment with Stacks
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#focussing-on-security" class="md-nav__link">
+    Focussing on Security
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#building-images-with-dockerfile" class="md-nav__link">
+    Building Images with Dockerfile
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+  <h1>Docker</h1>
+
+<h2 id="introduction-to-docker">Introduction to Docker</h2>
+<p>Containerization technology has been around for longer before Docker popularized it. But it was Docker which made the containerization technology accessible to the common people.</p>
+<h3 id="docker-the-technology-vs-docker-the-company">Docker - The Technology vs Docker - The Company</h3>
+<p>The term Docker could refer to two things,</p>
+<ol>
+<li>Docker, Inc. - The company behind developing the product.</li>
+<li><a href="https://www.docker.com/">Docker</a> - One of the the products the company offers.</li>
+</ol>
+<h4 id="a-brief-history-about-docker-inc">A brief history about Docker, Inc.</h4>
+<p>Docker, Inc is an American technology company that develops tools around the containers and technologies that enable it. The company was founded in 2008 with the name <strong>dotCloud</strong> by Kamel Founadi, Solomon Hykes and Sebastian Pahl in Paris and later moved to the US in 2010. The company was renamed to Docker in 2013. </p>
+<p>Check out more about the company through <a href="https://www.docker.com/company/">Docker, Inc. website</a>. The above paragraph is condensed from Wikipedia, <a href="https://en.wikipedia.org/wiki/Docker,_Inc.">check here for the Wikipedia article</a></p>
+<p>Some of the popular products of Docker, Inc. include,
+- <a href="https://hub.docker.com/">Docker Hub</a> - A central repository of containers.
+- <a href="https://www.docker.com/products/docker-desktop/">Docker Desktop</a> - Desktop GUI for Windows and Mac platforms.</p>
+<p>Docker also offers several pricing tiers with varied feature set. Check out <a href="https://www.docker.com/pricing/">Docker's pricing page here</a>.</p>
+<h4 id="a-brief-history-about-docker">A brief history about Docker</h4>
+<h3 id="from-linux-to-everywhere">From Linux to everywhere</h3>
+<p>Docker traditionally was developed to work on the Linux OS, but slowly with Microsoft's contributions and close support with Docker, Inc. the platform is also available for Windows. This gave birth to 2 types of containers namely,</p>
+<ol>
+<li>Linux Containers - Runs on Windows, Mac and Linux</li>
+<li>Windows Containers - Runs on Windows</li>
+</ol>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Linux Containers</label><label for="__tabbed_1_2">Windows Containers</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>docker<span class="w"> </span>pull<span class="w"> </span>ubuntu:latest
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">docker</span> <span class="n">pull</span> <span class="n">mcr</span><span class="p">.</span><span class="n">microsoft</span><span class="p">.</span><span class="n">com</span><span class="p">/</span><span class="n">powershell</span><span class="p">:</span><span class="n">lts-nanoserver</span><span class="p">-</span><span class="n">1903</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>As containers share the kernel of the host operating system, Windows containers cannot run on a Mac or Linux. However, thanks to Microsoft's support for Linux, Windows containers as well as Linux containers can run on Windows.</p>
+<hr />
+<h2 id="docker-installation">Docker Installation</h2>
+<p><a href="https://docs.docker.com/get-docker/">Refer the Docs</a> for the latest information on instructions for how to install docker for the platform of your choice. Docker is available (thanks to the contribution of countless open source contributions) on Linux, Windows and Mac. However, the way the containerization is implemented varies slightly across the platforms.</p>
+<hr />
+<h2 id="docker-architecture">Docker Architecture</h2>
+<p>Docker follows a simple client-server architecture along with a central repository to store and serve the images. Thus, there are 3 main components in a docker implementation.</p>
+<ol>
+<li><strong>Client</strong><ul>
+<li>It connects to the docker engine to <em>send and receive commands and outputs</em>.</li>
+<li>It could be a <em>GUI Application</em> such as Docker Desktop (available for Windows and Mac) or a <em>CLI Tool</em> available for Docker CLI (Windows, Mac and Linux).</li>
+<li>Client can exist on the same machine as the Docker Engine or exist on a different machine.</li>
+</ul>
+</li>
+<li><strong>Server</strong><ul>
+<li>This is</li>
+<li>It performs all operations related to containers throughout their lifetime.</li>
+<li>Often referred to as <code>dockerd</code> (pronounced as <code>docker-dee</code>).</li>
+<li>It manages several container objects such as images, containers, volumes, networks and other plugins.</li>
+</ul>
+</li>
+<li><strong>Repository</strong><ul>
+<li>A storage location for container images.</li>
+<li>It could be the official repository from Docker Inc., <a href="https://hub.docker.com/">Docker Hub</a> or from a third-party provider such as AWS, Azure or GCP or locally maintained by a company.</li>
+</ul>
+</li>
+</ol>
+<p>Communication between docker client and docker engine happens over <em>REST API</em>. Docker engine runs on <em>port 2376</em> by default.</p>
+<h3 id="client">Client</h3>
+<ul>
+<li>The docker client provides a primary way for the users to interact with docker.</li>
+<li>It provides an interface to manage container objects such as images, containers, volumes, networks and other plugins.</li>
+<li>
+<p>Docker client is available as</p>
+<ol>
+<li><strong>Docker CLI</strong> - Available in Windows, Mac and Linux.</li>
+<li><strong>Docker Desktop</strong> - Available on Windows and Mac.</li>
+</ol>
+</li>
+</ul>
+<h3 id="engine">Engine</h3>
+<p>The docker engine can be considered as the software that runs, manages and terminates the containers as per the user's requirements. Docker engine (currently-2023) is modular in nature and is made up of smaller specialized tools that adhere to open standards such as the Open Container Initiative or OCI.</p>
+<h4 id="monolithic-docker-engine-from-the-past">Monolithic Docker Engine from the past</h4>
+<p>When docker was initially released, the docker engine had two components.</p>
+<ol>
+<li><strong>Docker Daemon or <code>dockerd</code></strong> - a singular daemon that contained the code for client, API, container runtime and more.</li>
+<li><strong>LXC</strong> (Linux Containers)- An OS-level virtualization technology that allows creation and management of multiple isolated Linux virtual environments on a single control host</li>
+</ol>
+<p>The docker daemon was built as a monolith that performs several functionalities and LXC was specific to Linux, thus threatening the cross-platform ambition of docker.</p>
+<p>LSX was soon replaced with <code>libcontainer</code> developed in-house by Docker. Inc. to provide a cross-platform functionality to docker. <code>libcontainer</code> replaced LXC as the execution driver in docker 0.9.</p>
+<p>The next priority was to breakdown the monolithic docker daemon into microservices. This gave rise to tools such as <code>runc</code>, <code>containerd</code> and <code>shim</code> discussed below.</p>
+<h4 id="open-container-initiative-oci">Open Container Initiative (OCI)</h4>
+<p>The <a href="https://opencontainers.org/">Open Container Initiative</a> or the OCI is an open governance standard/structure for the purpose of creating industry standards around container formats and runtimes. OCI was established in 2015 by Docker and other industry leaders in the container industry.</p>
+<p>OCI currently contains 3 specifications</p>
+<ol>
+<li><strong>Runtime Specification (<code>runtime-spec</code>)</strong></li>
+<li><strong>Image specification (<code>image-spec</code>)</strong></li>
+<li><strong>Distribution Specification (<code>distribution-spec</code>)</strong></li>
+</ol>
+<h4 id="docker-in-its-present-state">Docker in its present state</h4>
+<p>Currently (2023), Docker engine is made up of the following components.</p>
+<ol>
+<li><strong>docker daemon or <code>dockerd</code></strong><ul>
+<li>The docker daemon or <code>dockerd</code> provides an interface between the docker client and the core docker functionalities.</li>
+<li>The client communicates to <code>dockerd</code> via REST API and <code>dockerd</code> delegates the tasks and performs the actions as directed from the client.</li>
+<li>From being a monolithic implementation to a microservices focussed tool, most of the <code>dockerd</code>'s initial functionality is stripped into their own services.</li>
+<li>Currently, the daemon is responsible for image management, image builds, REST API communication, authentication, security, core network</li>
+</ul>
+</li>
+<li><strong><code>containerd</code></strong><ul>
+<li>Its main functionality is to manage container lifecycle.</li>
+<li>It interfaces between the daemon and <code>runc</code></li>
+<li>Initially it set out to be a lightweight container management tool, it soon took additional functionality of managing other objects such as images, volumes and networks.</li>
+<li>However, as <code>containerd</code> is very modular, most of the functionality can be added only if required, thus keeping the size small.</li>
+<li><a href="https://containerd.io/"><code>containerd</code></a> is currently a graduated CNCF project.</li>
+</ul>
+</li>
+<li><strong><code>shim</code></strong>  <ul>
+<li><code>shim</code> promotes the concept of daemon-less containers.</li>
+<li>It is used to decouple the container runtimes from the <code>containerd</code> service.</li>
+<li>This is advantageous as the now-decoupled environment is not dependent on <code>containerd</code> for its operation, thus allowing <code>containerd</code> and thereby the daemon to be started, stopped or upgraded without killing all the running containers.</li>
+<li>Every time a new container needs to be started, a new fork of the <code>runc</code> is created.</li>
+<li><code>runc</code> then starts the container and then exists.</li>
+<li><code>shim</code> then takes over the process and manages the containers by keeping the STDIN and STDOUT streams open and reporting container's exit status back to the daemon.</li>
+</ul>
+</li>
+<li><strong><code>runc</code></strong><ul>
+<li>It is the reference implementation of the OCI <code>runtime-spec</code>. </li>
+<li><code>runc</code> is referred to operating at the OCI layer.</li>
+<li>It is a lightweight CLI wrapper for <code>libcontainer</code>  interfacing between the host kernel and the container.</li>
+<li>At its core, the functionality of <code>runc</code> is to start containers and it is very efficient at doing that.</li>
+<li><code>runc</code> can be replaced with any other OCI <code>runtime-spec</code> compatible runtimes.</li>
+</ul>
+</li>
+</ol>
+<h3 id="image-repositoryregistry">Image Repository/Registry</h3>
+<p><a href="https://hub.docker.com/">Docker Hub</a> is the most popular image repository/registry to upload and manage docker images (OCI compatible images). It offers features such as image versions (tags), public and paid repositories and much more. There are several <a href="https://www.docker.com/pricing/">pricing options</a> that offer varied support and feature set.</p>
+<p>There are other image repositories as well. Some of the other popular ones include</p>
+<ul>
+<li><a href="https://aws.amazon.com/ecr/">Amazon Elastic Container Registry</a> by AWS.</li>
+<li><a href="https://azure.microsoft.com/en-in/products/container-registry/">Azure Container Registry</a> by Azure.</li>
+<li><a href="https://cloud.google.com/container-registry/">Container Registry</a> by Google Cloud (GCP)</li>
+</ul>
+<hr />
+<h2 id="communication-via-rest-api">Communication via REST API</h2>
+<p>Communication between the client, docker engine and the image repository occurs via REST API. This is implemented by the docker daemon.</p>
+<p>Docker can be set up in two ways</p>
+<ol>
+<li>Docker Client and Docker Engine on the same host - Communication over the IPC socket.</li>
+<li>Docker Client and Docker Engine on different hosts - communication over the network</li>
+</ol>
+<h4 id="client-and-engine-on-same-host">Client and Engine on Same Host</h4>
+<p>In a default installation, the docker client and the docker engine are setup in the same host. In such cases the communication is made via the local IPC socket.</p>
+<div class="admonition example ipc socket">
+<p class="admonition-title">Example</p>
+<p>Unix Domain Socket (UDS) or Inter-Process Communication (IPC) Socket is a data communications endpoint for exchanging data between processes running on the same host operating system. It is a standard component of the POSIX operating systems.</p>
+<p>In an IPC Socket communication, all communication occurs entirely within the operating system kernel. </p>
+</div>
+<p>The socket can be found at <code>/var/run/docker.sock</code> on Linux and at <code>//./pipedocker_engine</code> on Windows. </p>
+<h4 id="client-and-engine-on-different-host">Client and Engine on Different Host</h4>
+<hr />
+<h2 id="docker-objects">Docker Objects</h2>
+<p>Docker comprises of several entities referred commonly as objects. These are</p>
+<ol>
+<li><strong>[[Docker#Images|Images]]</strong> - Templates that are used when containers are created and used.</li>
+<li><strong>[[Docker#Containers|Containers]]</strong> - Running/operational instance of an image.</li>
+<li><strong>[[Docker#Volumes|Volumes]]</strong> - Persistent storage for data created and stored during container runtimes.</li>
+<li><strong>[[Docker#Networks|Networks]]</strong> - Constructs of networking that enable containers to communicate within themselves and outside of the docker environment to the docker host and to other external networks.</li>
+<li><strong>[[Docker#Networks|Networks]]</strong> - Optional functionalities across domains such as volume, networking, authentication and so on that can be added to the docker engine.</li>
+</ol>
+<h3 id="images">Images</h3>
+<ul>
+<li>Images are one of the core parts of a docker implementation.</li>
+<li>They are templates from which containers are created.</li>
+<li>Hence images are considered as build-time constructs.</li>
+<li>Once a container is created from an image, they both become dependent on each other, thus the <em>image cannot be destroyed unless all of the containers that use the image are stopped and removed</em>. </li>
+<li>Images are usually small in size as they contain the barebones of what is required to run the app or service or environment and nothing else. Containers use the host's operating system for lower level tasks, hence the light weightiness of the images.</li>
+<li>However, Microsoft's images on windows are a little bit larger in size due to the architecture of the Windows Operating System.</li>
+</ul>
+<h4 id="pulling-images">Pulling Images</h4>
+<p>The process of downloading an image from a repository is referred to as <strong>pulling</strong>. Docker defaults to Docker Hub as source repository, however it is possible to change the repository when pulling the images and the process remains the same nonetheless. </p>
+<div class="highlight"><span class="filename">docker pull command</span><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>docker<span class="w"> </span>pull<span class="w"> </span>ubuntu:latest
+</code></pre></div>
+<p>If the image did not exist prior locally, it is pulled as given below.</p>
+<div class="highlight"><span class="filename">docker pull output - new pull</span><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>latest: Pulling from library/ubuntu
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>677076032cca: Pull complete
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>Digest: sha256:9a0bdde4188b896a372804be2384015e90e3f84906b750c1a53539b585fbbe7f
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>Status: Downloaded newer image for ubuntu:latest
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>docker.io/library/ubuntu:latest
+</code></pre></div>
+<p>However, if the image already exists locally, the following information is given by the docker engine back to the client.</p>
+<div class="highlight"><span class="filename">docker pull output - existing image</span><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>latest: Pulling from library/ubuntu
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>Digest: sha256:9a0bdde4188b896a372804be2384015e90e3f84906b750c1a53539b585fbbe7f
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>Status: Image is up to date for ubuntu:latest
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>docker.io/library/ubuntu:latest
+</code></pre></div>
+<p>What happens if an image that does not exist is requested for a pull?</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>docker<span class="w"> </span>pull<span class="w"> </span>totally-fake-image
+</code></pre></div>
+<p>The action returns the following response.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Using default tag: latest
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>Error response from daemon: pull access denied for totally-fake-image, repository does not exist or may require &#39;docker login&#39;: denied: requested access to the resource is denied
+</code></pre></div>
+<p>To pull all images in a repository (usually not recommended) pass the <code>-a</code> flag to the docker pull command.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>docker<span class="w"> </span>pull<span class="w"> </span>-a<span class="w"> </span>image
+</code></pre></div>
+<h4 id="listing-the-locally-stored-images">Listing the locally stored Images</h4>
+<p>To list the images that are currently available locally, the following commands can be used.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>docker<span class="w"> </span>images
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>docker<span class="w"> </span>image<span class="w"> </span>ls
+</code></pre></div>
+<p>Docker then displays all the images that are available locally.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>REPOSITORY   TAG       IMAGE ID       CREATED       SIZE
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>postgres     latest    680aba37fd0f   2 weeks ago   379MB
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>node         latest    272b8142e84e   2 weeks ago   998MB
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>mysql        latest    57da161f45ac   2 weeks ago   517MB
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>ubuntu       latest    58db3edaf2be   4 weeks ago   77.8MB
+</code></pre></div>
+<p>The <code>docker image ls</code> command allows to filter the output of the docker images returned based on certain criteria such as</p>
+<ul>
+<li><strong>dangling (Accepts Boolean)</strong> - Untagged images which usually occur when newer images are built with the tag that exists prior. Docker removes the tag from the older version of the image and attaches the tag to the newer image, thus leaving the older image without tags.</li>
+<li><strong>before (Accepts image name/ID)</strong> - Returns all the images created before the supplied image.</li>
+<li><strong>since (Accepts image name/ID)</strong> - Returns all the images created after the supplied image.</li>
+<li><strong>label (Accepts string)</strong> - Returns the images based on the presence of a label or value. However, the docker images ls command does not display labels in its output.</li>
+</ul>
+<p>Docker also supports filtering using reference (additional functioning features) and the usage Go templates using the <code>--format</code> flag.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># List images that are devoid of tags</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>docker<span class="w"> </span>image<span class="w"> </span>ls<span class="w"> </span>--filter<span class="w"> </span><span class="nv">dangling</span><span class="o">=</span><span class="nb">true</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="c1"># List images that have tags</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>docker<span class="w"> </span>image<span class="w"> </span>ls<span class="w"> </span>--filter<span class="w"> </span><span class="nv">dangling</span><span class="o">=</span><span class="nb">false</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="c1"># List images before the curious-salamander </span>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>docker<span class="w"> </span>image<span class="w"> </span>ls<span class="w"> </span>--filter<span class="w"> </span><span class="nv">before</span><span class="o">=</span><span class="s2">&quot;curious-salamander&quot;</span>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="c1"># List images after the curious-salamander</span>
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>docker<span class="w"> </span>image<span class="w"> </span>ls<span class="w"> </span>--filter<span class="w"> </span><span class="nv">since</span><span class="o">=</span><span class="s2">&quot;curious-salamander&quot;</span>
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a>
+<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="c1"># List images with Go Templates formatting</span>
+<a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a>docker<span class="w"> </span>image<span class="w"> </span>ls<span class="w"> </span>--format<span class="w"> </span><span class="s2">&quot;{{.Repository}}: {{.Tag}} - {{.Size}}&quot;</span>
+</code></pre></div>
+<h4 id="image-naming">Image Naming</h4>
+<p>Each and every image is labelled in a container registry to make it easier to identify the image. A standard image nomenclature is given below.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>registry-link/repository-link/image-name:tag
+</code></pre></div>
+<ul>
+<li><code>registry-link</code><ul>
+<li>DNS name of the image registry.</li>
+<li>Instructs docker client of which registry to use.</li>
+<li>This is optional, will resolve to Docker Hub registry if no input is provided.</li>
+</ul>
+</li>
+<li><code>repository-link</code><ul>
+<li>Name of the repository that hosts the image of interest.</li>
+<li>Official images are stored by Docker Hub in the top-level of the docker Hub namespace.</li>
+<li>This is not used if the image under question resides on the top level domain in Docker Hub.</li>
+<li>For third-party images, repository link is mandatory.</li>
+</ul>
+</li>
+<li><code>image-name</code><ul>
+<li>Denotes the actual name of the image of interest.</li>
+<li>This is a mandatory field.</li>
+</ul>
+</li>
+<li><code>tag</code><ul>
+<li>Denotes a variant of the image within the repository.</li>
+<li>it is just a string used for easy identification.</li>
+<li>Usually, repositories would have an incrementing numeric progression.</li>
+<li>The latest version, by convention is also tagged as latest to facilitate easy identification.</li>
+<li>However, it might not be the case always and it entirely depends on the developer and maintainer of the image</li>
+<li>The same image can have more than one tags as repositories do not restrict with content.</li>
+<li>It is always best practice to refer the documentation of the respective images to better understand the naming convention of the tags used foe the particular image.</li>
+</ul>
+</li>
+</ul>
+<h4 id="searching-the-repository">Searching the repository</h4>
+<p>To search for a particular image, the <code>docker search</code> command can be used. However it only searches the NAME field. By default, Docker displays only 25 hits, which can be increased to 100 with the limit flag.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>docker<span class="w"> </span>search<span class="w"> </span>alpine<span class="w"> </span>--limit<span class="w"> </span><span class="m">5</span>
+</code></pre></div>
+<p>This returns all the images with the text alpine in the NAME field.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>NAME                               DESCRIPTION                STARS     OFFICIAL   AUTOMATED
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>alpine                             A minimal Docker image …   9724      [OK]
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>alpinelinux/docker-cli             Simple and lightweight …   7
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>alpinelinux/gitlab-runner          Alpine Linux gitlab-run…   4
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>alpinelinux/alpine-gitlab-ci       Build Alpine Linux pack…   3
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>alpinelinux/gitlab-runner-helper   Helper image container …   2
+</code></pre></div>
+<h4 id="made-up-of-layers">Made up of Layers</h4>
+<p>An image in Docker is made up of several layers of files that make up the final image. This is done to make the images modular. Docker finally stacks the layers and displays them as a single image. This is done to make docker efficient in operation and avoid constant re-download of existing layers from other images.</p>
+<p>Suppose, if an ubuntu image has to be downloaded for the latest version, it might share the underlying layers from the previous versions of ubuntu. In that case, only the new layers are downloaded and the existing ones are used as such. </p>
+<p>Layers are represented using their SHA256 hashes. This is used by docker to identify and use the layers across images without downloading the same layer again for another image.</p>
+<p>The number of layers is based upon what the image does, the core applications it runs and that base image was used to build the image.</p>
+<p>These layers can be seen when trying to pull and image. To know the different layers that make up an image, use the <code>docker image inspect</code> command.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>docker<span class="w"> </span>image<span class="w"> </span>inspect<span class="w"> </span>&lt;container-name/container-ID&gt;:&lt;tag&gt;
+</code></pre></div>
+<p>Behind the scenes, docker employs a storage driver that enables the layer stacking and presenting them as a single file system. However, the user experience remains identical in each case.</p>
+<p>Inspecting images also provide a way to under stand the default process that will run upon the container start from the image. This is usually found within the CMD or the ENTRYPOINT sections of the <code>json</code> object the inspect command returns.</p>
+<h4 id="content-hashes-digests-and-immutability">Content Hashes, Digests and Immutability</h4>
+<p>Docker 1.10 introduced the concept of content hashes, where each and every image gets a <em>cryptographic content hash</em> which is a representation of  the contents of an image. This makes it impossible to change the contents of an image 
+without changing the hash. This is referred to as <strong>digest</strong>, which are a way to uniquely identify an image.</p>
+<p>When an image is pulled, the docker client shows the digest associated with the image. To show all the images along with their digest, use the --digest flag to <code>docker images</code> command</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>docker<span class="w"> </span>images<span class="w"> </span>--digest
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>REPOSITORY   TAG       DIGEST               IMAGE ID       CREATED       SIZE
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>postgres     latest    sha256:901df89014…   680aba37fd0f   2 weeks ago   379MB
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>node         latest    sha256:33e99abf6c…   272b8142e84e   2 weeks ago   998MB
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>mysql        latest    sha256:8653a170e0…   57da161f45ac   2 weeks ago   517MB
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>ubuntu       latest    sha256:9a0bdde418…   58db3edaf2be   4 weeks ago   77.8MB
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a># NOTE: The digest hash is truncated for better visibility
+</code></pre></div>
+<p>Currently, there is no provision to get the digest has for images in a remote registry. To get the digest of an image, the image needs to be pulled locally.</p>
+<h4 id="deleting-images">Deleting Images</h4>
+<p>Deleting images can be done by using the docker <code>images rm</code> or the <code>docker rmi</code> command. Deleting an image remove the layers corresponding to the image from the host. However, if any of the layers is shared across multiple other images, the layer is not removed until all other images are also deleted.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="c1"># Delete images (command 1)</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>docker<span class="w"> </span>image<span class="w"> </span>rm<span class="w"> </span>&lt;image-name/image-ID&gt;
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="c1"># Delete images (command 2)</span>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>docker<span class="w"> </span>rmi<span class="w"> </span>&lt;image-name/image-ID&gt;
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="c1"># Deleting multiple images</span>
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>docker<span class="w"> </span>rmi<span class="w"> </span>&lt;image-1-name/image-1-ID&gt;<span class="w"> </span>&lt;image-2-name/image-2-ID&gt;
+<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a>
+<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a><span class="c1"># Deleting all existing images</span>
+<a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a>docker<span class="w"> </span>rmi<span class="w"> </span><span class="k">$(</span>docker<span class="w"> </span>images<span class="w"> </span>-q<span class="k">)</span>
+</code></pre></div>
+<h3 id="containers">Containers</h3>
+<p>Docker implements containers adhering to the OCI runtime, image and specifications, thus making them compatible to be run on other containerization platforms also following the OCI standards. A container is the runtime instance of an image. It can be considered similar to a VM instance, but it is much faster and lightweight than a typical VM. Also Containers share the OS/Kernel of the host and install only the libraries and dependencies required by the application or service that the container hosts. </p>
+<h4 id="run-containers-basics">Run Containers (basics)</h4>
+<p>Containers can be run from an image which can be either locally available or hosted in an image registry. If locally available, containers are spun up from the local copy of the image. If the images are not available locally, they are pulled from the remote registry and then the containers are spun up. Thus, containers can only be spun from a local copy of images, which makes them dependent during runtime.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>centos:latest<span class="w"> </span>/bin/bash
+</code></pre></div>
+<p>The following outputs results in case the image does not exist locally.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>Unable to find image &#39;centos:latest&#39; locally
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>latest: Pulling from library/centos
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>a1d0c7532777: Pull complete
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>Digest: sha256:a27fd8080b517143cbbbab9dfb7c8571c40d67d534bbdee55bd6c473f432b177
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>Status: Downloaded newer image for centos:latest
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>[root@adcd9bc897de /]#
+</code></pre></div>
+<p>In case a copy of the image is found locally, the following output can be obtained where the container is started straightaway.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>[root@e5da8ec268a1 /]#
+</code></pre></div>
+<h4 id="listing-containers">Listing Containers</h4>
+<p>The following command(s) can be used to list the containers currently managed by the docker engine.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="c1"># List running containers (command 1)</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>docker<span class="w"> </span>container<span class="w"> </span>ls
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="c1"># List running containers (command 2)</span>
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a>docker<span class="w"> </span>ps
+<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a>
+<a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a><span class="c1"># List all containers (stopped and running)</span>
+<a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a>docker<span class="w"> </span>ps<span class="w"> </span>-a
+</code></pre></div>
+<p>Upon executing the commands given above, the following output can be obtained.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a># Listing just the running containers
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>CONTAINER ID   IMAGE           COMMAND        CREATED         STATUS         PORTS     NAMES
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>b83c2173f913   centos:latest   &quot;sleep 1000&quot;   3 seconds ago   Up 2 seconds             wonderful_wilson
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a>
+<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a># Listing all the containers (stopped and running)
+<a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a>CONTAINER ID   IMAGE           COMMAND        CREATED              STATUS                          PORTS     NAMES
+<a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a>b83c2173f913   centos:latest   &quot;sleep 1000&quot;   About a minute ago   Up About a minute                         wonderful_wilson
+<a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a>464420bfbaba   centos:latest   &quot;/bin/bash&quot;    About a minute ago   Exited (0) About a minute ago             gifted_robinson
+<a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a>e5da8ec268a1   centos:latest   &quot;/bin/bash&quot;    10 minutes ago       Exited (0) 2 minutes ago                  objective_banach
+<a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a>adcd9bc897de   centos:latest   &quot;/bin/bash&quot;    11 minutes ago       Exited (0) 10 minutes ago                 gracious_borg
+</code></pre></div>
+<h4 id="stopping-running-containers">Stopping Running Containers</h4>
+<p>To stop running containers, the following command(s) can be used.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a># Stop a single Container (command 1)
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>docker container stop curious_mongoose
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>
+<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a># Stop a single Container (command 2)
+<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a>docker stop curious_mongoose
+<a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a>
+<a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a># Stop a multiple Containers
+<a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a>docker stop angry_shark 1b24b6409429
+<a id="__codelineno-23-9" name="__codelineno-23-9" href="#__codelineno-23-9"></a>
+<a id="__codelineno-23-10" name="__codelineno-23-10" href="#__codelineno-23-10"></a># NOTE: Both container Name and Container ID can be used interchangeably.
+<a id="__codelineno-23-11" name="__codelineno-23-11" href="#__codelineno-23-11"></a># NOTE: First few characters (uniqueness required) are enough when using ID
+</code></pre></div>
+<p>Docker engine then returns the name/Id that was supplied to denote that the containers have been stopped.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a># Stop a single Container
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>curious_mongoose
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>
+<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a># Stop a multiple Containers
+<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a>angry_shark
+<a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a>1b24b6409429
+</code></pre></div>
+<p>An important note to take is that a container runs <em>as long as a main task is designated</em> to it. Without a process, the container terminates. Thus, here are a couple of things to keep in mind.</p>
+<ol>
+<li>Starting a container without a main process, terminates it immediately.</li>
+<li>Killing the main process of a running container, terminates the container.</li>
+</ol>
+<p>To exit a container without killing the container, use the shortcut <code>Ctrl + P + Q</code></p>
+<h4 id="start-a-stopped-container">Start a Stopped Container</h4>
+<p>To start a stopped container, use the following command</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="c1"># Start a stopped container (command 1)</span>
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>docker<span class="w"> </span>container<span class="w"> </span>start<span class="w"> </span>curious_mongoose
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>
+<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a><span class="c1"># Start a stopped container (command 2)</span>
+<a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a>docker<span class="w"> </span>start<span class="w"> </span>curious_mongoose
+<a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a>
+<a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a><span class="c1"># NOTE: Both container Name and Container ID can be used interchangeably.</span>
+</code></pre></div>
+<p>A couple of important things to keep in mind when stopping and starting containers.</p>
+<ol>
+<li>Stopping and Starting a container does not destroy the data within it.</li>
+<li>However, if a container is terminated, the data is lost.</li>
+</ol>
+<p>Containers can be configured to automatically restart based on a restart policy. These restart policies are <em>container scoped</em>. Following are the restart policies currently available</p>
+<ul>
+<li><code>always</code> - Always restart containers</li>
+<li><code>unless-stopped</code> - Restart unless explicitly stopped</li>
+<li><code>on-failed</code> - Restart if the container fails and terminates</li>
+</ul>
+<h4 id="removingdeleting-containers">Removing/Deleting Containers</h4>
+<p>To remove a container completely. the <code>docker container rm</code> command can be used.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a># Remove (delete) a container (Command 1)
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>docker container rm happy_otter
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>
+<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a># Remove (delete) a container (Command 2)
+<a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a>docker rm sad_kangaroo
+<a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a>
+<a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a># Remove (delete) all existing containers (forcefully)
+<a id="__codelineno-26-8" name="__codelineno-26-8" href="#__codelineno-26-8"></a>docker rm $(docker ps -aq) -f
+<a id="__codelineno-26-9" name="__codelineno-26-9" href="#__codelineno-26-9"></a>
+<a id="__codelineno-26-10" name="__codelineno-26-10" href="#__codelineno-26-10"></a># NOTE: Both container Name and Container ID can be used interchangeably.
+</code></pre></div>
+<p>The <code>docker rm</code> command can be used to stop and terminate (delete/remove) a container in one go. However, it abruptly terminates the container. The differences between using <code>docker stop</code> and <code>docker rm</code> to stop a container is the signal it sends to the main process running inside the container.</p>
+<ol>
+<li><code>docker stop</code> issues the SIGTERM command and it provides the containers to complete the existing task and terminate gracefully. If the container does not stop, a SIGKIILL command is issued.</li>
+<li><code>docker rm</code> issues the SIGKILL command straightaway, thus abruptly terminating the container.</li>
+</ol>
+<h4 id="accessing-the-container-logs">Accessing the Container Logs</h4>
+<p>Logs can be an effective way to identify and troubleshoot issues. To access the logs of a container, use the following command.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>docker<span class="w"> </span>logs<span class="w"> </span>keen_meninsky
+</code></pre></div>
+<p>This lists all the logs of the container named <code>keen_meninsky</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>root@f1b513b37415:/# whoami
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>root
+<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a>root@f1b513b37415:/# man grep
+<a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a>This system has been minimized by removing packages and content that are
+<a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a>not required on a system that users do not log into.
+<a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a>
+<a id="__codelineno-28-7" name="__codelineno-28-7" href="#__codelineno-28-7"></a>To restore this content, including manpages, you can run the &#39;unminimize&#39;
+<a id="__codelineno-28-8" name="__codelineno-28-8" href="#__codelineno-28-8"></a>command. You will still need to ensure the &#39;man-db&#39; package is installed.
+</code></pre></div>
+<h4 id="running-containers-more-options">Running Containers (more options)</h4>
+<p>Containers can be given additional instructions when they are started. Following are some of the most common information that can be passed when starting containers</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="c1"># Run container in detached mode (leaves current terminal free to use)</span>
+<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>ubuntu:latest
+<a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>
+<a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a><span class="c1"># Attach tthe STDIN, STDERR and STDOUT of a container to terminal</span>
+<a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a>docker<span class="w"> </span>-a<span class="w"> </span>proud_jackfruit
+<a id="__codelineno-29-6" name="__codelineno-29-6" href="#__codelineno-29-6"></a>
+<a id="__codelineno-29-7" name="__codelineno-29-7" href="#__codelineno-29-7"></a><span class="c1"># Run container in interactive mode (i) and leave the terminal open (t)</span>
+<a id="__codelineno-29-8" name="__codelineno-29-8" href="#__codelineno-29-8"></a>docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>ubuntu:latest
+<a id="__codelineno-29-9" name="__codelineno-29-9" href="#__codelineno-29-9"></a>
+<a id="__codelineno-29-10" name="__codelineno-29-10" href="#__codelineno-29-10"></a><span class="c1"># Execute a command on a container upon start</span>
+<a id="__codelineno-29-11" name="__codelineno-29-11" href="#__codelineno-29-11"></a>docker<span class="w"> </span>run<span class="w"> </span>ubuntu:latest<span class="w"> </span>sleep<span class="w"> </span><span class="m">100</span>
+<a id="__codelineno-29-12" name="__codelineno-29-12" href="#__codelineno-29-12"></a>
+<a id="__codelineno-29-13" name="__codelineno-29-13" href="#__codelineno-29-13"></a><span class="c1"># Explicitly name a container (replaces the randomly generated name)</span>
+<a id="__codelineno-29-14" name="__codelineno-29-14" href="#__codelineno-29-14"></a>docker<span class="w"> </span>run<span class="w"> </span>--name<span class="w"> </span>my-demo-environment<span class="w"> </span>ubuntu:latest
+<a id="__codelineno-29-15" name="__codelineno-29-15" href="#__codelineno-29-15"></a>
+<a id="__codelineno-29-16" name="__codelineno-29-16" href="#__codelineno-29-16"></a><span class="c1"># Map a port from host to container (Format - Host:Container)</span>
+<a id="__codelineno-29-17" name="__codelineno-29-17" href="#__codelineno-29-17"></a>docker<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span><span class="m">8080</span>:80<span class="w"> </span>httpd:2.4.55
+<a id="__codelineno-29-18" name="__codelineno-29-18" href="#__codelineno-29-18"></a>
+<a id="__codelineno-29-19" name="__codelineno-29-19" href="#__codelineno-29-19"></a><span class="c1"># Pass values to environment variables (can be checked with inspect command)</span>
+<a id="__codelineno-29-20" name="__codelineno-29-20" href="#__codelineno-29-20"></a>docker<span class="w"> </span>run<span class="w"> </span>-e<span class="w"> </span><span class="nv">MYSQL_ROOT_PASSWORD</span><span class="o">=</span>my-secret-pw<span class="w"> </span>mysql:latest
+</code></pre></div>
+<p>Check out the list of options that can be supplied from <a href="https://docs.docker.com/engine/reference/commandline/run/#options">Docker Docs</a> </p>
+<h3 id="volumes">Volumes</h3>
+<p>By default, all data stored within a container's runtime storage is deleted when the container is terminated. Volumes are a way to manage that behavior to allow to create non-persistent and persistent storage for data as required. </p>
+<ol>
+<li><strong>Non-Persistent Data</strong><ul>
+<li>Default storage mode for containers</li>
+<li>The data is wiped as soon as the container is terminated.</li>
+<li>Thus, the data lifecycle is coupled with the container lifecycle.</li>
+</ul>
+</li>
+<li><strong>Persistent Data</strong><ul>
+<li>Data persists beyond the lifecycle of the container.</li>
+<li>Volumes provide a way to persist data.</li>
+</ul>
+</li>
+</ol>
+<h4 id="non-persistent-data">Non-Persistent Data</h4>
+<p>Containers are considered to be immutable, meaning that they are read-only entities. However, a read-write layer is essential to run certain processes on containers. This is provided by means of storage drivers. Following are the storage drivers currently available.</p>
+<ul>
+<li>Storage Drivers available on Linux<ul>
+<li><code>AUFS</code></li>
+<li><code>overlay2</code></li>
+<li><code>devicemapper</code></li>
+<li><code>btrfs</code></li>
+<li><code>zfs</code></li>
+</ul>
+</li>
+<li>Storage Drivers on Windows<ul>
+<li><code>windowsfilter</code></li>
+</ul>
+</li>
+</ul>
+<h4 id="persistent-data">Persistent Data</h4>
+<p>Volumes are the most common way to maintain persistent data within containers. Following are three points to keep in mind as to why volumes are preferred to run persistent storage in containers.
+- <strong>Volumes are independent</strong> - volumes are not tied to the lifecycle of the container, hence the container can be stopped, removed and restarted, but the data would persist.
+- <strong>Volumes can be mapped to external storage</strong> - Volumes can be mapped to external storage services both on-premises and on cloud, thus allowing them to share storage with other machines.
+- <strong>Volumes can be mounted to multiple containers</strong> - Volumes provide features to attach them to multiple containers at the same time.</p>
+<div class="admonition note docker volumes as first-class citizens">
+<p class="admonition-title">Note</p>
+<p>Volumes in Docker are first-class citizens and have their own object in the API. Thus some sub-commands might mean different thing entirely in volumes as to what it would mean in the context of an image or a container.</p>
+</div>
+<h5 id="create-a-volume">Create a Volume</h5>
+<p>To create a new volume, use the following command</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="c1"># Create Docker Volumes</span>
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>docker<span class="w"> </span>volume<span class="w"> </span>create<span class="w"> </span>my-first-volume
+</code></pre></div>
+<p>This by default creates a docker volume with the <code>local driver</code>. Several other general and purpose built drivers are available as third party plugins providing Docker and thereby the containers running on Docker, seamless access to data across a wide variety of sources, formats and file systems.</p>
+<h5 id="listing-all-volumes">Listing all Volumes</h5>
+<p>To list all the volumes available locally, use the following command</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="c1"># List Docker Volumes</span>
+<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>docker<span class="w"> </span>volume<span class="w"> </span>ls
+</code></pre></div>
+<p>Docker Engine responds with the list of all volumes locally available.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>DRIVER    VOLUME NAME
+<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>local     6d406a6bfc9f2a4fd7c80f8a9f908437374ec861d2c4ca76519af2699bdb4c7f
+<a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a>local     3877ee1f1a0d095e20b3a67b11e33259c8adb077947c10e61a56ab983f6206db
+<a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a>local     a573c7afa8ec51e9970a75a49017de551790906b60512c83833c57728d999b0e
+</code></pre></div>
+<p>This shows the list of volumes with the <code>DRIVER</code> being used along with the <code>VOLUME NAME</code>. Unless specifically created, it shows the hash for the volume.</p>
+<h5 id="inspect-volumes">Inspect Volumes</h5>
+<p>To know more information about a volume in question, the <code>inspect</code> command can be used as below</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="c1"># Inspect a Docker Volume</span>
+<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>docker<span class="w"> </span>volume<span class="w"> </span>inspect<span class="w"> </span>my-first-volume
+</code></pre></div>
+<p>This produces an output with details about the volume.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>[
+<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>    {
+<a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a>        &quot;CreatedAt&quot;: &quot;2023-02-28T01:12:49Z&quot;,
+<a id="__codelineno-34-4" name="__codelineno-34-4" href="#__codelineno-34-4"></a>        &quot;Driver&quot;: &quot;local&quot;,
+<a id="__codelineno-34-5" name="__codelineno-34-5" href="#__codelineno-34-5"></a>        &quot;Labels&quot;: {},
+<a id="__codelineno-34-6" name="__codelineno-34-6" href="#__codelineno-34-6"></a>        &quot;Mountpoint&quot;: &quot;/var/lib/docker/volumes/my-first-volume/_data&quot;,
+<a id="__codelineno-34-7" name="__codelineno-34-7" href="#__codelineno-34-7"></a>        &quot;Name&quot;: &quot;my-first-volume&quot;,
+<a id="__codelineno-34-8" name="__codelineno-34-8" href="#__codelineno-34-8"></a>        &quot;Options&quot;: {},
+<a id="__codelineno-34-9" name="__codelineno-34-9" href="#__codelineno-34-9"></a>        &quot;Scope&quot;: &quot;local&quot;
+<a id="__codelineno-34-10" name="__codelineno-34-10" href="#__codelineno-34-10"></a>    }
+<a id="__codelineno-34-11" name="__codelineno-34-11" href="#__codelineno-34-11"></a>]
+</code></pre></div>
+<h5 id="attach-volumes">Attach Volumes</h5>
+<h5 id="delete-volumes">Delete Volumes</h5>
+<p>Docker Volumes can be deleted with the following commands</p>
+<ol>
+<li><code>docker volume rm</code> - (<em>SINGLE ACTION</em>) Deletes specific volumes supplied by their volume names.</li>
+<li><code>docker volume prune</code> - (<em>MASS ACTION</em>) Deletes all volumes that are currently not attached to a container or service.</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="c1"># Delete specific volumes</span>
+<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a>docker<span class="w"> </span>volume<span class="w"> </span>rm<span class="w"> </span>my-first-volume
+<a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a>
+<a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a><span class="c1"># Delete all non-attached volumes</span>
+<a id="__codelineno-35-5" name="__codelineno-35-5" href="#__codelineno-35-5"></a>docker<span class="w"> </span>volume<span class="w"> </span>prune
+</code></pre></div>
+<p>Docker shows the following output</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a># docker volume rm - for unattached volumes
+<a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a>my-first-volume
+<a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a>
+<a id="__codelineno-36-4" name="__codelineno-36-4" href="#__codelineno-36-4"></a># docker volume rm - or attached volumes
+<a id="__codelineno-36-5" name="__codelineno-36-5" href="#__codelineno-36-5"></a>Error response from daemon: remove important-volume: 
+<a id="__codelineno-36-6" name="__codelineno-36-6" href="#__codelineno-36-6"></a>volume is in use - [1b77d...9c7]
+<a id="__codelineno-36-7" name="__codelineno-36-7" href="#__codelineno-36-7"></a>
+<a id="__codelineno-36-8" name="__codelineno-36-8" href="#__codelineno-36-8"></a># docker volume prune
+<a id="__codelineno-36-9" name="__codelineno-36-9" href="#__codelineno-36-9"></a>WARNING! This will remove all local volumes not used by at least one container.
+<a id="__codelineno-36-10" name="__codelineno-36-10" href="#__codelineno-36-10"></a>Are you sure you want to continue? [y/N] y
+<a id="__codelineno-36-11" name="__codelineno-36-11" href="#__codelineno-36-11"></a>Deleted Volumes:
+<a id="__codelineno-36-12" name="__codelineno-36-12" href="#__codelineno-36-12"></a>a573c7afa8ec51e9970a75a49017de551790906b60512c83833c57728d999b0e
+<a id="__codelineno-36-13" name="__codelineno-36-13" href="#__codelineno-36-13"></a>3877ee1f1a0d095e20b3a67b11e33259c8adb077947c10e61a56ab983f6206db
+<a id="__codelineno-36-14" name="__codelineno-36-14" href="#__codelineno-36-14"></a>6d406a6bfc9f2a4fd7c80f8a9f908437374ec861d2c4ca76519af2699bdb4c7f
+<a id="__codelineno-36-15" name="__codelineno-36-15" href="#__codelineno-36-15"></a>
+<a id="__codelineno-36-16" name="__codelineno-36-16" href="#__codelineno-36-16"></a>Total reclaimed space: 1.71GB
+</code></pre></div>
+<h5 id="mount-volumes-to-containers">Mount Volumes to Containers</h5>
+<h5 id="using-volume-plugins">Using Volume Plugins</h5>
+<p>Volume Plugins are a way to extend the persistent data functionality across multiple cloud platforms and service providers. Docker Hub allows third party volume plugins to be hosted. Installing plugins can be done with the following command</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a>docker<span class="w"> </span>plugin<span class="w"> </span>install<span class="w"> </span>purestorage/docker-plugin:latest<span class="w"> </span>--alias<span class="w"> </span>pure<span class="w"> </span>--grant-all-permissions
+</code></pre></div>
+<div class="admonition danger data corruptions in shared volumes">
+<p class="admonition-title">Danger</p>
+<p>When writing data to a shared volume, there might be instances where the container holds the data in local buffer before committing to the shared volume. If multiple containers perform this delayed update, it is possible that the container that updates the data at the last might overwrite the existing data.</p>
+<p>To avoid this, the application or service that might access the shared volume must be developed in a way to circumvent the overwrite issue. </p>
+</div>
+<h3 id="networks">Networks</h3>
+<h4 id="architecture-and-implementation">Architecture and Implementation</h4>
+<p>At its highest level, networking in docker is comprised of 3 major components.</p>
+<ol>
+<li><strong>Container Network Model (CNM)</strong> - Provides the Specification of network implementation.</li>
+<li><strong>Libnetwork</strong> - Implementation of CNM for Docker.</li>
+<li><strong>Drivers</strong> - Offers support for network topologies.</li>
+</ol>
+<h5 id="container-network-model-cnm">Container Network Model (CNM)</h5>
+<p>Container Network Model provides the design fundamentals for networking in docker. CNM can be divided into 3 main building blocks.</p>
+<ol>
+<li><strong>Sandboxes</strong><ul>
+<li>Isolated network stacks, containing ethernet interfaces, ports, routing tables and DNS config.</li>
+</ul>
+</li>
+<li><strong>Endpoints</strong><ul>
+<li>Virtual network interfaces.</li>
+<li>Responsible for making connections. </li>
+</ul>
+</li>
+<li><strong>Networks</strong><ul>
+<li>These are software implementations of a network switch acting as a 802.1d bridge.</li>
+<li>They group together and isolate a collection of endpoints that need to communicate.</li>
+</ul>
+</li>
+</ol>
+<p>A connection between two containers needs to be explicitly established by means of networks connected via endpoints.</p>
+<h5 id="libnetwork">Libnetwork</h5>
+<p>While CNM provided the basis and guidelines for the architecture, Libnetwork is the actual implementation of the CNM for Docker. Libnetwork is written in Golang and is cross-platform.</p>
+<p>Previously the docker daemon used to perform all the networking and routing. But moving towards a cloud native, microservices based architecture favoring the Unix ideology of modular tools that perform specific function well, the networking part of the daemon was refactored into Libnetwork.</p>
+<p>Libnetwork also implements <em>native service discovery</em>, <em>ingress-based container load balancing</em> and the <em>network control plane &amp; management plane functionality</em>.</p>
+<h5 id="network-drivers">Network Drivers</h5>
+<p>While Libnetwork implements the network control plane and the management plane, the network drivers implement the data plane. Here, connectivity, isolation and creation of networks is handled by the drivers. </p>
+<p>By default, docker ships with several network drivers (commonly referred to as local drivers or native drivers). In Linux, these include <code>bridge</code>, <code>overlay</code>, <code>macvlan</code>. On Windows, these could be <code>nat</code>, <code>overlay</code>, <code>transparent</code> and <code>l2bridge</code>. There are several other third party network drivers available on Docker Hub for varied use cases.</p>
+<p>Each of these drivers are responsible for the actual creation and management of resources on the network they manage. </p>
+<p>At any given time, there can be multiple network drivers active, promoting a fluid environment and therefore Docker supports a wide range of heterogeneous networks. </p>
+<h4 id="working-with-networks">Working with Networks</h4>
+<p>:::note Docker Network as First-Class Citizens
+Networks in Docker are first-class citizens and have their own object in the API. Thus some sub-commands might mean different thing entirely in networks as to what it would mean in the context of an image or a container.
+:::</p>
+<h5 id="create-networks">Create Networks</h5>
+<p>To create a network in Docker, use the following command</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="c1"># Create networks in docker (by specifying driver)</span>
+<a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a>docker<span class="w"> </span>network<span class="w"> </span>create<span class="w"> </span>-d<span class="w"> </span>bridge<span class="w"> </span>MyLocalNetwork
+</code></pre></div>
+<p>Upon successful creation, the Docker engine shows the hash of the thus created network.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a>a98dddd335c41d115e89a3fb7113f8360a1b2d8cc3d8346a05c960c6fff42959
+</code></pre></div>
+<h5 id="listing-all-networks">Listing All Networks</h5>
+<p>To list all the active networks maintained by the Libnetwork associated with the local Docker engine, use the following command</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a><span class="c1"># List available Docker Networks</span>
+<a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a>docker<span class="w"> </span>network<span class="w"> </span>ls
+</code></pre></div>
+<p>This returns a similar list as follows based on what networks are locally configured and maintained.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a>NETWORK ID     NAME             DRIVER    SCOPE
+<a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a>a98dddd335c4   MyLocalNetwork   bridge    local
+<a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a>afe897982312   bridge           bridge    local
+<a id="__codelineno-41-4" name="__codelineno-41-4" href="#__codelineno-41-4"></a>7280ae463ec3   host             host      local
+</code></pre></div>
+<h5 id="inspect-networks">Inspect Networks</h5>
+<p>One of the most powerful tools when working with networks in docker, the inspect command provides valuable insights.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a><span class="c1"># Inspect a Docker Volume</span>
+<a id="__codelineno-42-2" name="__codelineno-42-2" href="#__codelineno-42-2"></a>docker<span class="w"> </span>network<span class="w"> </span>inspect<span class="w"> </span>MyLocalNetwork
+</code></pre></div>
+<p>This produces an output with details about the volume.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a>[
+<a id="__codelineno-43-2" name="__codelineno-43-2" href="#__codelineno-43-2"></a>    {
+<a id="__codelineno-43-3" name="__codelineno-43-3" href="#__codelineno-43-3"></a>        &quot;Name&quot;: &quot;MyLocalNetwork&quot;,
+<a id="__codelineno-43-4" name="__codelineno-43-4" href="#__codelineno-43-4"></a>        &quot;Id&quot;: &quot;ead060ef929e747f2be0bdedb7182a4047c3a8dbaeab63a6e103581dd4532abd&quot;,
+<a id="__codelineno-43-5" name="__codelineno-43-5" href="#__codelineno-43-5"></a>        &quot;Created&quot;: &quot;2023-03-01T17:05:04.12407108Z&quot;,
+<a id="__codelineno-43-6" name="__codelineno-43-6" href="#__codelineno-43-6"></a>        &quot;Scope&quot;: &quot;local&quot;,
+<a id="__codelineno-43-7" name="__codelineno-43-7" href="#__codelineno-43-7"></a>        &quot;Driver&quot;: &quot;bridge&quot;,
+<a id="__codelineno-43-8" name="__codelineno-43-8" href="#__codelineno-43-8"></a>        &quot;EnableIPv6&quot;: false,
+<a id="__codelineno-43-9" name="__codelineno-43-9" href="#__codelineno-43-9"></a>        &quot;IPAM&quot;: {
+<a id="__codelineno-43-10" name="__codelineno-43-10" href="#__codelineno-43-10"></a>            &quot;Driver&quot;: &quot;default&quot;,
+<a id="__codelineno-43-11" name="__codelineno-43-11" href="#__codelineno-43-11"></a>            &quot;Options&quot;: {},
+<a id="__codelineno-43-12" name="__codelineno-43-12" href="#__codelineno-43-12"></a>            &quot;Config&quot;: [
+<a id="__codelineno-43-13" name="__codelineno-43-13" href="#__codelineno-43-13"></a>                {
+<a id="__codelineno-43-14" name="__codelineno-43-14" href="#__codelineno-43-14"></a>                    &quot;Subnet&quot;: &quot;172.21.0.0/16&quot;,
+<a id="__codelineno-43-15" name="__codelineno-43-15" href="#__codelineno-43-15"></a>                    &quot;Gateway&quot;: &quot;172.21.0.1&quot;
+<a id="__codelineno-43-16" name="__codelineno-43-16" href="#__codelineno-43-16"></a>                }
+<a id="__codelineno-43-17" name="__codelineno-43-17" href="#__codelineno-43-17"></a>            ]
+<a id="__codelineno-43-18" name="__codelineno-43-18" href="#__codelineno-43-18"></a>        },
+<a id="__codelineno-43-19" name="__codelineno-43-19" href="#__codelineno-43-19"></a>        &quot;Internal&quot;: false,
+<a id="__codelineno-43-20" name="__codelineno-43-20" href="#__codelineno-43-20"></a>        &quot;Attachable&quot;: false,
+<a id="__codelineno-43-21" name="__codelineno-43-21" href="#__codelineno-43-21"></a>        &quot;Ingress&quot;: false,
+<a id="__codelineno-43-22" name="__codelineno-43-22" href="#__codelineno-43-22"></a>        &quot;ConfigFrom&quot;: {
+<a id="__codelineno-43-23" name="__codelineno-43-23" href="#__codelineno-43-23"></a>            &quot;Network&quot;: &quot;&quot;
+<a id="__codelineno-43-24" name="__codelineno-43-24" href="#__codelineno-43-24"></a>        },
+<a id="__codelineno-43-25" name="__codelineno-43-25" href="#__codelineno-43-25"></a>        &quot;ConfigOnly&quot;: false,
+<a id="__codelineno-43-26" name="__codelineno-43-26" href="#__codelineno-43-26"></a>        &quot;Containers&quot;: {},
+<a id="__codelineno-43-27" name="__codelineno-43-27" href="#__codelineno-43-27"></a>        &quot;Options&quot;: {},
+<a id="__codelineno-43-28" name="__codelineno-43-28" href="#__codelineno-43-28"></a>        &quot;Labels&quot;: {}
+<a id="__codelineno-43-29" name="__codelineno-43-29" href="#__codelineno-43-29"></a>    }
+<a id="__codelineno-43-30" name="__codelineno-43-30" href="#__codelineno-43-30"></a>]
+</code></pre></div>
+<h5 id="delete-networks">Delete Networks</h5>
+<p>Docker networks can be deleted with the following commands
+1. <code>docker network rm</code> - (<em>SINGLE ACTION</em>) Deletes specific networks supplied by their network Names or Network ID.
+2. <code>docker network prune</code> - (<em>MASS ACTION</em>) Deletes all networks that are currently not attached to a container or service.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a><span class="c1"># Delete specific networks</span>
+<a id="__codelineno-44-2" name="__codelineno-44-2" href="#__codelineno-44-2"></a>docker<span class="w"> </span>network<span class="w"> </span>rm<span class="w"> </span>Secret-Salamander
+<a id="__codelineno-44-3" name="__codelineno-44-3" href="#__codelineno-44-3"></a>
+<a id="__codelineno-44-4" name="__codelineno-44-4" href="#__codelineno-44-4"></a><span class="c1"># Delete all non-attached networks</span>
+<a id="__codelineno-44-5" name="__codelineno-44-5" href="#__codelineno-44-5"></a>docker<span class="w"> </span>network<span class="w"> </span>prune
+</code></pre></div>
+<p>Docker shows the following output</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a># docker network rm - for unattached volumes
+<a id="__codelineno-45-2" name="__codelineno-45-2" href="#__codelineno-45-2"></a>my-first-volume
+<a id="__codelineno-45-3" name="__codelineno-45-3" href="#__codelineno-45-3"></a>
+<a id="__codelineno-45-4" name="__codelineno-45-4" href="#__codelineno-45-4"></a># docker network rm - or attached network
+<a id="__codelineno-45-5" name="__codelineno-45-5" href="#__codelineno-45-5"></a>Error response from daemon: remove Secret-Salamander: 
+<a id="__codelineno-45-6" name="__codelineno-45-6" href="#__codelineno-45-6"></a>Network is in use - [1b77d...9c7]
+<a id="__codelineno-45-7" name="__codelineno-45-7" href="#__codelineno-45-7"></a>
+<a id="__codelineno-45-8" name="__codelineno-45-8" href="#__codelineno-45-8"></a># docker network prune
+<a id="__codelineno-45-9" name="__codelineno-45-9" href="#__codelineno-45-9"></a>WARNING! This will remove all custom networks not used by at least one container.
+<a id="__codelineno-45-10" name="__codelineno-45-10" href="#__codelineno-45-10"></a>Are you sure you want to continue? [y/N] y
+<a id="__codelineno-45-11" name="__codelineno-45-11" href="#__codelineno-45-11"></a>Deleted Networks:
+<a id="__codelineno-45-12" name="__codelineno-45-12" href="#__codelineno-45-12"></a>minikube
+<a id="__codelineno-45-13" name="__codelineno-45-13" href="#__codelineno-45-13"></a>mongo-network
+<a id="__codelineno-45-14" name="__codelineno-45-14" href="#__codelineno-45-14"></a>MyLocalNetwork
+</code></pre></div>
+<h3 id="plugins">Plugins</h3>
+<hr />
+<h2 id="build-images-with-dockerfile">Build Images with Dockerfile</h2>
+<p>Containers are immutable infrastructure, meaning no changes are made extensively once the application is deployed. In order to run containers, images are required as templates. Images can be built as per requirement by using a <em>Dockerfile</em>.</p>
+<p>A Dockerfile provides a way to create images. It guides the Docker engine on the requirements to build an image as per the specifications supplied. The directory in which the application and dependencies exist is referred to as the <em>build context</em>. Dockerfile usually exists at the build context directory. Dockerfile is always written as <strong>Dockerfile</strong> with the first letter capital and without spaces. Also, a Dockerfile does not have an extension (its just Dockerfile).</p>
+<h3 id="dockerfile-syntax-reference">Dockerfile Syntax Reference</h3>
+<p>The template for a typical Dockerfile follows the below given syntax.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a><span class="c"># Comment</span>
+<a id="__codelineno-46-2" name="__codelineno-46-2" href="#__codelineno-46-2"></a>INSTRUCTION<span class="w"> </span>arguments
+</code></pre></div>
+<ul>
+<li>Here, the <code>INSTRUCTION</code>'s are not case-sensitive but by convention are written in uppercase to identify instructions from arguments. </li>
+<li>Dockerfile instructions are executed in order from top to bottom.</li>
+</ul>
+<p>The following snippet captures some of the most commonly used <code>INSTRUCTION</code> types and an example of how to use them.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a><span class="c"># DemoDirective=</span>
+<a id="__codelineno-47-2" name="__codelineno-47-2" href="#__codelineno-47-2"></a><span class="c"># Dummy Dockerfile - Demonstration Purpose</span>
+<a id="__codelineno-47-3" name="__codelineno-47-3" href="#__codelineno-47-3"></a><span class="k">FROM</span><span class="w"> </span><span class="s">alpine</span><span class="w">                              </span>
+</code></pre></div>
+<h4 id="structure-and-formatting">Structure and Formatting</h4>
+<ul>
+<li><strong>Comments</strong> <em>(Optional)</em><ul>
+<li>Comments in a Dockerfile are marked with a <code>#</code> at the beginning.</li>
+<li>However, parser directives can also start with a <code>#</code></li>
+<li>Unless the line is a parser directive, all comments are ignored by the Docker Daemon when processing the Dockerfile.</li>
+</ul>
+</li>
+<li><strong>Parser Directives</strong> <em>(Optional)</em><ul>
+<li>Parser Directives affect the way the subsequent lines are handled in a Dockerfile.</li>
+<li>They are structured as special kind of comment in the form of <code># directive=value</code>. </li>
+<li>Parser Directives cannot be repeated and can appear only once.</li>
+</ul>
+</li>
+<li><strong>Environment Variables</strong> <em>(Optional)</em><ul>
+<li>sdf</li>
+</ul>
+</li>
+<li><strong>.dockerignore</strong> <em>(Optional)</em><ul>
+<li>It can be used to exclude files and directories from being sent to the Docker Daemon.</li>
+<li>Docker CLI looks for a file named <code>.dockerignore</code> in the root of the context.</li>
+<li>If found, the CLI modifies the contents of the entities to exclude the files and directories before it sends to the daemon.</li>
+<li>It can be used to exclude files and folders being sent with the <code>ADD</code> and <code>COPY</code> instructions</li>
+<li>A typical .<code>dockerignore</code> file is provided below for reference.</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a># Comment
+<a id="__codelineno-48-2" name="__codelineno-48-2" href="#__codelineno-48-2"></a>/temp*
+<a id="__codelineno-48-3" name="__codelineno-48-3" href="#__codelineno-48-3"></a>*/secrets*
+<a id="__codelineno-48-4" name="__codelineno-48-4" href="#__codelineno-48-4"></a>*/*/logs*
+<a id="__codelineno-48-5" name="__codelineno-48-5" href="#__codelineno-48-5"></a>temp?
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Syntax Reference</th>
+<th>What they mean in a <code>.dockerignore</code> file</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code># comment</code></td>
+<td>Ignored - no action taken</td>
+</tr>
+<tr>
+<td><code>*/temp*</code></td>
+<td>Excludes files and subdirectories starting with <code>temp</code> from the root of the context.</td>
+</tr>
+<tr>
+<td><code>*/secrets</code></td>
+<td>Excludes files and subdirectories one level down the root that start with <code>secrets</code></td>
+</tr>
+<tr>
+<td><code>temp?</code></td>
+<td>Excludes files and subdirectories that start with <code>temp</code> and have one more character at the root of the context.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="dockerfile-instructions-and-arguments">Dockerfile Instructions and Arguments</h4>
+<ul>
+<li><strong>FROM</strong> <em>(Mandatory)</em><ul>
+<li>This instruction is mandatory and always must be the first instruction at the top of the Dockerfile. However there can be comments preceding it.</li>
+<li>Specifies the base image from which the current image is to be built.</li>
+<li>To build an image from scratch, use the official <code>scratch</code> image from Docker Hub. </li>
+</ul>
+</li>
+<li><strong>RUN</strong> <em>(Optional)</em></li>
+</ul>
+<h3 id="building-the-images">Building the Images</h3>
+<h3 id="pushing-the-images-to-a-registry">Pushing the Images to a Registry</h3>
+<hr />
+<h2 id="deployment-with-docker-compose">Deployment with Docker Compose</h2>
+<hr />
+<h2 id="container-orchestration-with-docker-swarm">Container Orchestration with Docker Swarm</h2>
+<hr />
+<h2 id="networking">Networking</h2>
+<hr />
+<h2 id="overlay-networking">Overlay Networking</h2>
+<hr />
+<h2 id="persisting-data-with-volumes">Persisting Data with Volumes</h2>
+<hr />
+<h2 id="app-deployment-with-stacks">App Deployment with Stacks</h2>
+<hr />
+<h2 id="focussing-on-security">Focussing on Security</h2>
+<hr />
+<p>[[Docker Cheat Sheet]]</p>
+<h2 id="building-images-with-dockerfile">Building Images with Dockerfile</h2>
+<ul>
+<li><strong>Pull a container image from a repository:</strong> <code>docker pull image:tag</code></li>
+<li><strong>Run a container:</strong> <code>docker run image:tag</code></li>
+<li><strong>Docker ps command:</strong> <code>docker ps &lt;flags&gt;</code> --&gt; <code>docker ps -a</code> (all containers, running or not)</li>
+<li><strong>Docker stop command:</strong> <code>docker stop &lt;container_name/container_id&gt;</code></li>
+<li><strong>Docker rm command:</strong> <code>docker rm &lt;container_name/container_id&gt;</code></li>
+<li><strong>List local images:</strong> <code>docker images</code> or <code>docker images ls</code></li>
+<li><strong>Execute a command on a container:</strong> <code>docker exec &lt;container_name/container_id&gt; &lt;command&gt;</code></li>
+<li><strong>Running in detached mode:</strong> <code>docker run -d image:tag</code></li>
+<li><strong>Attach a detached container:</strong> <code>docker attach &lt;container_name/container_id&gt;</code></li>
+</ul>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var tab,labels=set.querySelector(".tabbed-labels");for(tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Back to top
+          </button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2023 <a href="https://github.com/PatrickAmbrosso"  target="_blank" rel="noopener">Patrick Ambrose (PatrickAmbrosso)</a>
+
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+    <a href="mailto:patrickambrosericky@gmail.com" target="_blank" rel="noopener" title="Mail Patrick Ambrose" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4l217.6 163.2c11.4 8.5 27 8.5 38.4 0l217.6-163.2c12.1-9.1 19.2-23.3 19.2-38.4 0-26.5-21.5-48-48-48H48zM0 176v208c0 35.3 28.7 64 64 64h384c35.3 0 64-28.7 64-64V176L294.4 339.2a63.9 63.9 0 0 1-76.8 0L0 176z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://www.instagram.com/patrickambrosso/" target="_blank" rel="noopener" title="Patrick&#39;s Instagram Profile" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://github.com/PatrickAmbrosso" target="_blank" rel="noopener" title="Patrick&#39;s GitHub Profile" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://twitter.com/PatrickAmbrosso" target="_blank" rel="noopener" title="Patrick&#39;s Twitter Profile" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://www.linkedin.com/in/PatrickAmbrosso/" target="_blank" rel="noopener" title="Patrick&#39;s LinkedIn Profile" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.instant", "navigation.path", "navigation.top", "toc.follow", "search.suggest", "search.highlight", "content.tooltips", "content.tabs.link", "content.code.annotation", "content.code.copy"], "search": "../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c2be25ad.min.js"></script>
+      
+        <script src="../../Javascripts/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="../../js/open_in_new_tab.js"></script>
+      
+    
+  </body>
+</html>

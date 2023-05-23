@@ -1,0 +1,1765 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Personal portfolio and digital garden of Patrick Ambrose">
+      
+      
+        <meta name="author" content="Patrick Ambrose">
+      
+      
+        <link rel="canonical" href="https://patrickambrose.com/Notes/Git/">
+      
+      
+        <link rel="prev" href="../GoLang/">
+      
+      
+        <link rel="next" href="../../Projects/MkDocs-Documentation-Site/">
+      
+      <link rel="icon" href="../../Assets/Patrick-Ambrose-Favicon.png">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.12">
+    
+    
+      
+        <title>Git - PatFolio</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.85bb2934.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.a6bdf11c.min.css">
+      
+      
+  
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+  
+  <style>:root{--md-admonition-icon--note:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M1 7.775V2.75C1 1.784 1.784 1 2.75 1h5.025c.464 0 .91.184 1.238.513l6.25 6.25a1.75 1.75 0 0 1 0 2.474l-5.026 5.026a1.75 1.75 0 0 1-2.474 0l-6.25-6.25A1.752 1.752 0 0 1 1 7.775Zm1.5 0c0 .066.026.13.073.177l6.25 6.25a.25.25 0 0 0 .354 0l5.025-5.025a.25.25 0 0 0 0-.354l-6.25-6.25a.25.25 0 0 0-.177-.073H2.75a.25.25 0 0 0-.25.25ZM6 5a1 1 0 1 1 0 2 1 1 0 0 1 0-2Z"/></svg>');--md-admonition-icon--abstract:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.5 1.75v11.5c0 .138.112.25.25.25h3.17a.75.75 0 0 1 0 1.5H2.75A1.75 1.75 0 0 1 1 13.25V1.75C1 .784 1.784 0 2.75 0h8.5C12.216 0 13 .784 13 1.75v7.736a.75.75 0 0 1-1.5 0V1.75a.25.25 0 0 0-.25-.25h-8.5a.25.25 0 0 0-.25.25Zm13.274 9.537v-.001l-4.557 4.45a.75.75 0 0 1-1.055-.008l-1.943-1.95a.75.75 0 0 1 1.062-1.058l1.419 1.425 4.026-3.932a.75.75 0 1 1 1.048 1.074ZM4.75 4h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM4 7.75A.75.75 0 0 1 4.75 7h2a.75.75 0 0 1 0 1.5h-2A.75.75 0 0 1 4 7.75Z"/></svg>');--md-admonition-icon--info:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"/></svg>');--md-admonition-icon--tip:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.499.75a.75.75 0 0 1 1.5 0v.996C5.9 2.903 6.793 3.65 7.662 4.376l.24.202c-.036-.694.055-1.422.426-2.163C9.1.873 10.794-.045 12.622.26 14.408.558 16 1.94 16 4.25c0 1.278-.954 2.575-2.44 2.734l.146.508.065.22c.203.701.412 1.455.476 2.226.142 1.707-.4 3.03-1.487 3.898C11.714 14.671 10.27 15 8.75 15h-6a.75.75 0 0 1 0-1.5h1.376a4.484 4.484 0 0 1-.563-1.191 3.835 3.835 0 0 1-.05-2.063 4.647 4.647 0 0 1-2.025-.293.75.75 0 0 1 .525-1.406c1.357.507 2.376-.006 2.698-.318l.009-.01a.747.747 0 0 1 1.06 0 .748.748 0 0 1-.012 1.074c-.912.92-.992 1.835-.768 2.586.221.74.745 1.337 1.196 1.621H8.75c1.343 0 2.398-.296 3.074-.836.635-.507 1.036-1.31.928-2.602-.05-.603-.216-1.224-.422-1.93l-.064-.221c-.12-.407-.246-.84-.353-1.29a2.425 2.425 0 0 1-.507-.441 3.075 3.075 0 0 1-.633-1.248.75.75 0 0 1 1.455-.364c.046.185.144.436.31.627.146.168.353.305.712.305.738 0 1.25-.615 1.25-1.25 0-1.47-.95-2.315-2.123-2.51-1.172-.196-2.227.387-2.706 1.345-.46.92-.27 1.774.019 3.062l.042.19a.884.884 0 0 1 .01.05c.348.443.666.949.94 1.553a.75.75 0 1 1-1.365.62c-.553-1.217-1.32-1.94-2.3-2.768L6.7 5.527c-.814-.68-1.75-1.462-2.692-2.619a3.737 3.737 0 0 0-1.023.88c-.406.495-.663 1.036-.722 1.508.116.122.306.21.591.239.388.038.797-.06 1.032-.19a.75.75 0 0 1 .728 1.31c-.515.287-1.23.439-1.906.373-.682-.067-1.473-.38-1.879-1.193L.75 5.677V5.5c0-.984.48-1.94 1.077-2.664.46-.559 1.05-1.055 1.673-1.353V.75Z"/></svg>');--md-admonition-icon--success:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"/></svg>');--md-admonition-icon--question:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.92 6.085h.001a.749.749 0 1 1-1.342-.67c.169-.339.436-.701.849-.977C6.845 4.16 7.369 4 8 4a2.756 2.756 0 0 1 1.637.525c.503.377.863.965.863 1.725 0 .448-.115.83-.329 1.15-.205.307-.47.513-.692.662-.109.072-.22.138-.313.195l-.006.004a6.24 6.24 0 0 0-.26.16.952.952 0 0 0-.276.245.75.75 0 0 1-1.248-.832c.184-.264.42-.489.692-.661.103-.067.207-.132.313-.195l.007-.004c.1-.061.182-.11.258-.161a.969.969 0 0 0 .277-.245C8.96 6.514 9 6.427 9 6.25a.612.612 0 0 0-.262-.525A1.27 1.27 0 0 0 8 5.5c-.369 0-.595.09-.74.187a1.01 1.01 0 0 0-.34.398ZM9 11a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"/></svg>');--md-admonition-icon--warning:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M6.457 1.047c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0 1 14.082 15H1.918a1.75 1.75 0 0 1-1.543-2.575Zm1.763.707a.25.25 0 0 0-.44 0L1.698 13.132a.25.25 0 0 0 .22.368h12.164a.25.25 0 0 0 .22-.368Zm.53 3.996v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 11a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"/></svg>');--md-admonition-icon--failure:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343h-.001a8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746Zm1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275ZM6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.749.749 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L6.94 8 4.97 6.03a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018Z"/></svg>');--md-admonition-icon--danger:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M9.504.43a1.516 1.516 0 0 1 2.437 1.713L10.415 5.5h2.123c1.57 0 2.346 1.909 1.22 3.004l-7.34 7.142a1.249 1.249 0 0 1-.871.354h-.302a1.25 1.25 0 0 1-1.157-1.723L5.633 10.5H3.462c-1.57 0-2.346-1.909-1.22-3.004L9.503.429Zm1.047 1.074L3.286 8.571A.25.25 0 0 0 3.462 9H6.75a.75.75 0 0 1 .694 1.034l-1.713 4.188 6.982-6.793A.25.25 0 0 0 12.538 7H9.25a.75.75 0 0 1-.683-1.06l2.008-4.418.003-.006a.036.036 0 0 0-.004-.009l-.006-.006-.008-.001c-.003 0-.006.002-.009.004Z"/></svg>');--md-admonition-icon--bug:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M4.72.22a.75.75 0 0 1 1.06 0l1 .999a3.488 3.488 0 0 1 2.441 0l.999-1a.748.748 0 0 1 1.265.332.75.75 0 0 1-.205.729l-.775.776c.616.63.995 1.493.995 2.444v.327c0 .1-.009.197-.025.292.408.14.764.392 1.029.722l1.968-.787a.75.75 0 0 1 .556 1.392L13 7.258V9h2.25a.75.75 0 0 1 0 1.5H13v.5c0 .409-.049.806-.141 1.186l2.17.868a.75.75 0 0 1-.557 1.392l-2.184-.873A4.997 4.997 0 0 1 8 16a4.997 4.997 0 0 1-4.288-2.427l-2.183.873a.75.75 0 0 1-.558-1.392l2.17-.868A5.036 5.036 0 0 1 3 11v-.5H.75a.75.75 0 0 1 0-1.5H3V7.258L.971 6.446a.75.75 0 0 1 .558-1.392l1.967.787c.265-.33.62-.583 1.03-.722a1.677 1.677 0 0 1-.026-.292V4.5c0-.951.38-1.814.995-2.444L4.72 1.28a.75.75 0 0 1 0-1.06Zm.53 6.28a.75.75 0 0 0-.75.75V11a3.5 3.5 0 1 0 7 0V7.25a.75.75 0 0 0-.75-.75ZM6.173 5h3.654A.172.172 0 0 0 10 4.827V4.5a2 2 0 1 0-4 0v.327c0 .096.077.173.173.173Z"/></svg>');--md-admonition-icon--example:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M5 5.782V2.5h-.25a.75.75 0 0 1 0-1.5h6.5a.75.75 0 0 1 0 1.5H11v3.282l3.666 5.76C15.619 13.04 14.543 15 12.767 15H3.233c-1.776 0-2.852-1.96-1.899-3.458Zm-2.4 6.565a.75.75 0 0 0 .633 1.153h9.534a.75.75 0 0 0 .633-1.153L12.225 10.5h-8.45ZM9.5 2.5h-3V6c0 .143-.04.283-.117.403L4.73 9h6.54L9.617 6.403A.746.746 0 0 1 9.5 6Z"/></svg>');--md-admonition-icon--quote:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M1.75 2.5h10.5a.75.75 0 0 1 0 1.5H1.75a.75.75 0 0 1 0-1.5Zm4 5h8.5a.75.75 0 0 1 0 1.5h-8.5a.75.75 0 0 1 0-1.5Zm0 5h8.5a.75.75 0 0 1 0 1.5h-8.5a.75.75 0 0 1 0-1.5ZM2.5 7.75v6a.75.75 0 0 1-1.5 0v-6a.75.75 0 0 1 1.5 0Z"/></svg>');}</style>
+
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Nunito Sans";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../Stylesheets/Extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="grey" data-md-color-accent="deep-purple">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#introduction-to-git" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="PatFolio" class="md-header__button md-logo" aria-label="PatFolio" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 7v10h2v-4h2a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2H9m2 2h2v2h-2V9M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            PatFolio
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Git
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+          
+            
+            
+            
+            <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="grey" data-md-color-accent="deep-purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+            
+              <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3 3.19.09m3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95 2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31Z"/></svg>
+              </label>
+            
+          
+            
+            
+            
+            <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="grey" data-md-color-accent="deep-purple"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+            
+              <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5c-.84 0-1.65.15-2.39.42L12 2M3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29L3.34 7m.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14L3.36 17M20.65 7l-1.77 3.79a7.023 7.023 0 0 0-2.38-4.15l4.15.36m-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29L20.64 17M12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44L12 22Z"/></svg>
+              </label>
+            
+          
+        </form>
+      
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/PatrickAmbrosso/PatFolio" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    PatrickAmbrosso/PatFolio
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../.." class="md-tabs__link">
+      PatFolio
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../../About-Me/" class="md-tabs__link">
+      About Me
+    </a>
+  </li>
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../Garden-Gate/" class="md-tabs__link md-tabs__link--active">
+        Digital Garden
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../Projects/MkDocs-Documentation-Site/" class="md-tabs__link">
+        Projects
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../Learnings/Road-to-DevOps/" class="md-tabs__link">
+        Learnings
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="PatFolio" class="md-nav__button md-logo" aria-label="PatFolio" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 7v10h2v-4h2a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2H9m2 2h2v2h-2V9M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/></svg>
+
+    </a>
+    PatFolio
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/PatrickAmbrosso/PatFolio" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    PatrickAmbrosso/PatFolio
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        PatFolio
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../About-Me/" class="md-nav__link">
+        About Me
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          Digital Garden
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Digital Garden
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Garden-Gate/" class="md-nav__link">
+        Welcome to the Garden
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+          Technology
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_3_2">
+          <span class="md-nav__icon md-icon"></span>
+          Technology
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Docker/" class="md-nav__link">
+        Docker
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../GoLang/" class="md-nav__link">
+        Golang
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Git
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Git
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction-to-git" class="md-nav__link">
+    Introduction to git
+  </a>
+  
+    <nav class="md-nav" aria-label="Introduction to git">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#story-of-git" class="md-nav__link">
+    Story of git
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#where-it-differs" class="md-nav__link">
+    Where it differs
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#git-states" class="md-nav__link">
+    Git states
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#git-and-command-line" class="md-nav__link">
+    Git and command line
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#up-and-running-with-git" class="md-nav__link">
+    Up and running with git
+  </a>
+  
+    <nav class="md-nav" aria-label="Up and running with git">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#git-installation" class="md-nav__link">
+    Git installation
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#git-setup" class="md-nav__link">
+    Git setup
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getting-help" class="md-nav__link">
+    Getting help
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#git-repositories" class="md-nav__link">
+    Git repositories
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#initializing-git-repositories" class="md-nav__link">
+    Initializing git repositories
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getting-the-status-of-a-repo" class="md-nav__link">
+    Getting the status of a repo
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#saving-changes-to-a-repo" class="md-nav__link">
+    Saving changes to a repo
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#staging-changes-in-a-repo" class="md-nav__link">
+    Staging changes in a repo
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#committing-changes" class="md-nav__link">
+    Committing changes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getting-the-history-log-of-previous-commits" class="md-nav__link">
+    Getting the history (log) of previous commits
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ignoring-files-and-directories" class="md-nav__link">
+    Ignoring files and directories
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#branching" class="md-nav__link">
+    Branching
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#switching-branches" class="md-nav__link">
+    Switching branches
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#merging-branches" class="md-nav__link">
+    Merging branches
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#finding-the-difference" class="md-nav__link">
+    Finding the difference
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stashing-the-changes" class="md-nav__link">
+    Stashing the changes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#checking-out-an-old-commit" class="md-nav__link">
+    Checking out an old commit
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#discarding-changes" class="md-nav__link">
+    Discarding changes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#un-staging-changes" class="md-nav__link">
+    Un-staging changes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#undoing-commits" class="md-nav__link">
+    Undoing commits
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reverting-commits" class="md-nav__link">
+    Reverting commits
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          Projects
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Projects
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Projects/MkDocs-Documentation-Site/" class="md-nav__link">
+        MkDocs Documentation Site
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          Learnings
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Learnings
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Learnings/Road-to-DevOps/" class="md-nav__link">
+        Road to DevOps
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction-to-git" class="md-nav__link">
+    Introduction to git
+  </a>
+  
+    <nav class="md-nav" aria-label="Introduction to git">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#story-of-git" class="md-nav__link">
+    Story of git
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#where-it-differs" class="md-nav__link">
+    Where it differs
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#git-states" class="md-nav__link">
+    Git states
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#git-and-command-line" class="md-nav__link">
+    Git and command line
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#up-and-running-with-git" class="md-nav__link">
+    Up and running with git
+  </a>
+  
+    <nav class="md-nav" aria-label="Up and running with git">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#git-installation" class="md-nav__link">
+    Git installation
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#git-setup" class="md-nav__link">
+    Git setup
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getting-help" class="md-nav__link">
+    Getting help
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#git-repositories" class="md-nav__link">
+    Git repositories
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#initializing-git-repositories" class="md-nav__link">
+    Initializing git repositories
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getting-the-status-of-a-repo" class="md-nav__link">
+    Getting the status of a repo
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#saving-changes-to-a-repo" class="md-nav__link">
+    Saving changes to a repo
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#staging-changes-in-a-repo" class="md-nav__link">
+    Staging changes in a repo
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#committing-changes" class="md-nav__link">
+    Committing changes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getting-the-history-log-of-previous-commits" class="md-nav__link">
+    Getting the history (log) of previous commits
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ignoring-files-and-directories" class="md-nav__link">
+    Ignoring files and directories
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#branching" class="md-nav__link">
+    Branching
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#switching-branches" class="md-nav__link">
+    Switching branches
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#merging-branches" class="md-nav__link">
+    Merging branches
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#finding-the-difference" class="md-nav__link">
+    Finding the difference
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stashing-the-changes" class="md-nav__link">
+    Stashing the changes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#checking-out-an-old-commit" class="md-nav__link">
+    Checking out an old commit
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#discarding-changes" class="md-nav__link">
+    Discarding changes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#un-staging-changes" class="md-nav__link">
+    Un-staging changes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#undoing-commits" class="md-nav__link">
+    Undoing commits
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reverting-commits" class="md-nav__link">
+    Reverting commits
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+  <h1>Git</h1>
+
+<h2 id="introduction-to-git">Introduction to git</h2>
+<h3 id="story-of-git">Story of git</h3>
+<p>[[Linux]] Operating being Open Source maintains its kernel code accessible to the public. During the early years of maintenance (1991 - 2002), the changes to the kernel were passed around as patches and archived files.</p>
+<p>In 2002, the Linux Kernel Project began using a proprietary [[Version Control System#Distributed Version Control Systems (DVCS)|DVCS]] software by the name <em>BitKeeper</em>. In 2005 the relationship between the Linux community and the BitKeeper software company broke and the tool's free-of-charge status was revoked.</p>
+<p>This prompted the Linux Community and primarily [[Linux Torvalds]] to develop their own tool based on the learnings and short comings of the previous system. On conception, Git had a few goals
+- Speed of operation
+- Simplicity in design
+- Strong support for non-linear development (parallel branching)
+- Fully distributed
+- Handle large projects</p>
+<p>Since 2005, when Git saw its initial release, the system has always stuck to these goals that it set out with initially. Today Git is one of the most popular distributed version control systems and it is free to use and open source.</p>
+<h3 id="where-it-differs">Where it differs</h3>
+<p>git fundamentally differs from the other VCS tools available in each of the following ways.</p>
+<ol>
+<li><strong>Snapshots</strong><ul>
+<li>Other VCS tools generally look for the differences in data between each file and store data on a per file basis (referred to as <em>delta-based version control</em>).</li>
+<li>Git on the other hand, takes complete snapshots of the overall state of the files and stores the information only on files that have changed. This enables Git to be mindful of what data needs to be updated in its tracking. If a file did not change, it merely refers to the last tracked version that was changed. In a way, it appears as a stream of snapshots.</li>
+</ul>
+</li>
+<li><strong>Operations done Locally</strong><ul>
+<li>Almost all the operations that Git does is done locally on the machine. This makes Git really fast when compared to CVCS systems which are network latency based for the speed of operation.</li>
+<li>It also gives the freedom to work on the files without being connected to a network. All changes can be stored offline and committed to the local copy of the repository.</li>
+</ul>
+</li>
+<li><strong>Integrity</strong><ol>
+<li>Every action in Git is checksummed before it is stored and it can be referred to by that checksum. This means that every action that occurs on the files is tracked by Git, either success or failure of action. Thus, information cannot be lost or corrupted without git knowing it.</li>
+<li>Git internally uses SHA-1 hash which is a 40 character hexadecimal value computed based on the contents of a file or directory structure in Git. Git stores everything in its database by hash value of its contents. A SHA-1 hash looks like  <code>24b9da6552252987aa493b52f8696cd6d3b00373</code>.</li>
+</ol>
+</li>
+<li><strong>Data Addition</strong><ul>
+<li>Git always adds data to its database and it is very difficult to mess things up that is not undoable.</li>
+<li>If commits are frequently and promptly made, data can be recovered to any state as required.</li>
+</ul>
+</li>
+</ol>
+<h3 id="git-states">Git states</h3>
+<p>By default, git does not track a file unless explicitly asked to. Thus all files in a git repository can be either <em>tracked</em> or <em>untracked</em>
+1. <strong>Tracked</strong> - Git was explicitly asked to track changes to the file.
+2. <strong>Untracked</strong> - Git was not asked to track changes to the file.</p>
+<p>Files that are being actively tracked by git can have 4 states
+1. <strong>Unmodified</strong> - Files are are not changed from the last snapshot or checkout from the original source.
+1. <strong>Modified</strong> - Files have been changed/modified, but not stored in the git database.
+2. <strong>Staged</strong> - Files that have are set to be saved in the git database in the next snapshot.
+3. <strong>Committed</strong> - Files that have been saved in the git database.</p>
+<p>These states are cyclic in nature. When a file is committed, it is sent back to the unmodified state, as there are not changes from the last snapshot or checkout. But subsequently when changes are made to the file, it goes into the modified state, which can then be staged and eventually committed, thus performing the cycle all over again.</p>
+<p>With this in mind, all git projects have 3 sections namely,
+1. <strong>Working Tree/Directory</strong> - Where the tracked and untracked files reside.
+2. <strong>Staging Area</strong> - Where the files that are set to be saved in the next snapshot reside. Physically, it is present in the <code>.git</code> directory. In git terminology, it is referred to as <code>index</code>.
+3. <strong><code>.git</code> directory</strong> - This is where git stores all the metadata and object database for the git project.</p>
+<h3 id="git-and-command-line">Git and command line</h3>
+<p>The Power of Git comes with its support on the command-line. Although Git contains several open-source and paid GUI clients available, most of them implement a subset of git's capability. This makes the command line the only place where git shines with its full capability.</p>
+<hr />
+<h2 id="up-and-running-with-git">Up and running with git</h2>
+<h3 id="git-installation">Git installation</h3>
+<p>Git is available on Windows, Linux and MacOS Operating Systems. The instructions to download and setup Git varies based on the operating system and further information on the same can be found at <a href="https://git-scm.com/downloads">Git - Downloads</a>.</p>
+<h3 id="git-setup">Git setup</h3>
+<p>Git comes with a tool called as <code>git config</code> that allows to set up git as per preferences. Configurations can be set on 3 levels, namely
+1. <strong>System Level at <code>[path]/etc/gitconfig</code></strong> - Applied to every user in the system.
+2. User Level at  <code>/.gitconfig</code> or <code>/.config/git/config</code> - Applies to the current user in the system.
+3. Repo Level at <code>config</code> file at <code>.git</code> directory - Applies to the currently repository the use is currently working on.</p>
+<p>Each level of config overrides the previous level configuration. To get a list of all git configurations, run the following command.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c"># Show configurations</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">git</span> <span class="n">config</span> <span class="p">-</span><span class="n">-list</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c"># Show configurations and their origin</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">git</span> <span class="n">config</span> <span class="p">-</span><span class="n">-list</span> <span class="p">-</span><span class="n">-show-origin</span>
+</code></pre></div>
+<p>The following are some of the most common configuration settings that are done when setting up a local git environment.
+1. <strong>Setting up identity</strong> - Used to authenticate the user and their actions.
+2. <strong>Setting up default editor</strong> - Sets up default code editor for the actions that git launches. Options include Emacs, Vim, Notepad++, VS Code, Sublime Text or Atom.
+3. <strong>Setting up default branch name</strong> - Git and other platforms are moving from the terminology of <code>master</code> to other names to be more inclusive. Most users prefer the term <code>main</code> to be their default branch name.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c"># Identity Configurations</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">git</span> <span class="n">config</span> <span class="p">-</span><span class="n">-global</span> <span class="n">user</span><span class="p">.</span><span class="n">name</span> <span class="s2">&quot;John Doe&quot;</span> 
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">git</span> <span class="n">config</span> <span class="p">-</span><span class="n">-global</span> <span class="n">user</span><span class="p">.</span><span class="n">email</span> <span class="n">johndoe</span><span class="nv">@example</span><span class="p">.</span><span class="n">com</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="c"># Editor Configurations</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="n">git</span> <span class="n">config</span> <span class="p">-</span><span class="n">-global</span> <span class="n">core</span><span class="p">.</span><span class="n">editor</span> <span class="n">vscode</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="c"># Default Branch Configurations</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="n">git</span> <span class="n">config</span> <span class="p">-</span><span class="n">-global</span> <span class="n">init</span><span class="p">.</span><span class="n">defaultBranch</span> <span class="n">main</span>
+</code></pre></div>
+<h3 id="getting-help">Getting help</h3>
+<p>Manuals and help in git can be accessed in a number of ways. These are showcased below.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c"># For full-blown help/manual page</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">git</span> <span class="n">help</span> <span class="p">&lt;</span><span class="n">verb</span><span class="p">&gt;</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">git</span> <span class="p">&lt;</span><span class="n">verb</span><span class="p">&gt;</span> <span class="p">-</span><span class="n">-help</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="nb">man </span><span class="n">git</span><span class="p">-&lt;</span><span class="n">verb</span><span class="p">&gt;</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="c"># For compressed, available options for commands</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="n">git</span> <span class="p">&lt;</span><span class="n">verb</span><span class="p">&gt;</span> <span class="n">-h</span>
+</code></pre></div>
+<h3 id="git-repositories">Git repositories</h3>
+<p>In the context of Git, a <em>repository</em> or a <em>repo</em> is a central location where code and its related files are stored and managed. It is basically a directory or folder where git tracks and manages directories, subdirectories and files.</p>
+<p>These git repositories can be hosted on various platforms such as  [[GitHub]], GitLab, Bitbucket or even self-hosted.</p>
+<p>The tracking made by Git in these repositories are what allows git to facilitate code rollbacks, comparisons and so on.</p>
+<h3 id="initializing-git-repositories">Initializing git repositories</h3>
+<p>In order to make git track a particular directory of interest (create a git repo), git needs to be specifically informed to track the directory. Git does not globally track all changes. This process is called as <em>initialization</em> and it is done to create new git repositories. Initialization of git repositories is done via the <code>git init</code> command</p>
+<div class="highlight"><span class="filename">Initializing a git repository</span><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Initialize git repository in the current directory</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>git<span class="w"> </span>init<span class="w"> </span>.
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># Initialize git repository in another directory</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>git<span class="w"> </span>init<span class="w"> </span><span class="s2">&quot;C:\Users\UniqueUser\Learning Git\RealRepo&quot;</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="c1"># Initialize a git repository with a different main branch name</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>git<span class="w"> </span>init<span class="w"> </span>-b<span class="w"> </span>primary
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="c1"># Initialize a git repository - less verbose</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>git<span class="w"> </span>init<span class="w"> </span>-q
+</code></pre></div>
+<p>he command creates a <code>.git</code> directory with subdirectories for <code>objects</code>, <code>refs/heads</code>, <code>refs/tags</code> and template files. It also creates an initial branch without any commits (name based on the settings - global preference or local options via flags). </p>
+<p><strong>Note:</strong> If a destination directory path is not provided, git initializes a repository in the current location.</p>
+<blockquote>
+<p>[!success] <code>git init</code> twice?
+Running <code>git init</code> on a repository more than once is not an issue. The command is commonly rerun when new templates are added or to move the repository to another place if separate git directory is given.</p>
+<p>[!caution] Just initializing does not track files
+It is to be noted that just initializing a repository does not track the files in the directory. In order to track the files, the files have to be added to the git tracking and then committed. This is covered later.</p>
+<p>[!danger] Gitception - Do not initialize git repos inside other repositories
+It is not good practice to have git tracked repositories inside git repositories making a nested git repository case. Some conflicts might arise and is generally discouraged.</p>
+<p>However there are ways to deal with managing existing git repositories that are used as a part of a current project. These ways are dealt later.</p>
+</blockquote>
+<h3 id="getting-the-status-of-a-repo">Getting the status of a repo</h3>
+<p>The status of a git repository states the current condition of the repository under question. It is used to know the following things about a directory.</p>
+<ol>
+<li><strong>Branch information</strong> - It shows the name of the current branch that the repository is on.</li>
+<li><strong>Staging area information</strong> - It shows the status of files in the staging area, including which files have been modified and which files are ready to be committed.</li>
+<li><strong>Untracked files</strong> - It shows a list of files that are in the repository's working directory but have not yet been added to the staging area.</li>
+<li><strong>Upstream branch information</strong> - It shows whether the current branch has an upstream branch and whether the local branch is ahead or behind the upstream branch.</li>
+<li><strong>Conflicts</strong> - It shows if there are any conflicts in the repository that need to be resolved before changes can be committed.</li>
+</ol>
+<div class="highlight"><span class="filename">Getting the status of a git repository</span><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>git<span class="w"> </span>status
+</code></pre></div>
+<div class="highlight"><span class="filename">Output from git status command</span><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>On branch main
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>Your branch is up to date with &#39;origin/main&#39;.
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>Changes to be committed:
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>  (use &quot;git restore --staged &lt;file&gt;...&quot; to unstage)
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>        modified:   README.md
+</code></pre></div>
+<p><strong>Note:</strong> It can also state if a git repository exists in a particular directory. The following snippet shows how git status reports if there is no git repository in the directory of interest.</p>
+<div class="highlight"><span class="filename">Output from git status command</span><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>fatal: not a git repository (or any of the parent directories): .git
+</code></pre></div>
+<h3 id="saving-changes-to-a-repo">Saving changes to a repo</h3>
+<p>Saving changes to a repository is done in two steps, each with a specific purpose.</p>
+<ol>
+<li><strong>Staging</strong> - Move the changes to be committed to the staging area.</li>
+<li><strong>Committing</strong> - Actually writing the state to the version history</li>
+</ol>
+<h3 id="staging-changes-in-a-repo">Staging changes in a repo</h3>
+<p>Staging in the context of git refers to the process of preparing changes made to a file or files for commit. Staging facilitates the users to selectively choose which changes must be committed, allowing the commits to be focused and organized.</p>
+<blockquote>
+<p>[!info] Keeping the commits atomic
+Care must be taken to make sure that a commit should encompass a single change or feature or a fix. In simpler terms, each commit must be focussed on one things only. This is done to facilitate easier undo and rollbacks and makes the code easier to follow and review.</p>
+</blockquote>
+<p>To stage changes in a git repository, the <code>git add</code>  command is used.</p>
+<div class="highlight"><span class="filename">Staging changes in a git repository</span><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Staging a specific file</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>git<span class="w"> </span>add<span class="w"> </span>myfile.txt
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="c1"># Staging multiple files</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>git<span class="w"> </span>add<span class="w"> </span>myfile.txt<span class="w"> </span>README.md<span class="w"> </span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="c1"># Staging all changes</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>git<span class="w"> </span>add<span class="w"> </span>.
+</code></pre></div>
+<p>Upon running the command, <code>git status</code> command can be run to check and see if the changes are staged.</p>
+<div class="highlight"><span class="filename">git status after staging changes</span><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>On branch main
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>Your branch is up to date with &#39;origin/main&#39;.
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>Changes to be committed:
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>  (use &quot;git restore --staged &lt;file&gt;...&quot; to unstage)
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>        modified:   README.md
+</code></pre></div>
+<h3 id="committing-changes">Committing changes</h3>
+<p>Committing in the context of git means to save a snapshot of the state of a file or multiple files in the version history. Commits are like save points to which the code base can be reverted to. The command <code>git commit</code>  can be used to commit changes.</p>
+<div class="highlight"><span class="filename">Committing changes to a repository</span><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># Commit message provided via the command</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Commit Title&quot;</span><span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Commit description&quot;</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="c1"># Commit message provided via the default git text editor*</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>git<span class="w"> </span>commit<span class="w"> </span>
+</code></pre></div>
+<p>Upon running the command, git saves the changes to the version history and produces a message similar to the one showcased below. However, this can also be silenced with the <code>-q</code> flag or make it more detailed with the <code>-v</code> flag.</p>
+<p><strong>Note:</strong> During the installation of git or via the global config options, it is possible to set the default text editor for git. This text editor is used when input from the user is required such as in case of supplying a commit message.</p>
+<blockquote>
+<p>[!info] Writing good commit messages
+Committing is at the core of the git workflow, and good commit messages are very important in communicating the changes made by the code to the existing project. This makes it easier to follow the changes for future reference or to aid in troubleshooting or bug hunting.</p>
+<p>The following are some of the guidelines for writing a good commit message</p>
+<ol>
+<li><strong>Keep it short and concise</strong> - A good commit message should be short and to the point. It should describe the changes made in the commit in a clear and concise manner.</li>
+<li><strong>Use the imperative mood</strong> - A commit message should be written in the imperative mood. This means using command-like language, such as "Fix bug" or "Add new feature".</li>
+<li><strong>Provide context</strong> - A commit message should provide context for the changes made in the commit. It should answer questions such as "Why was this change made?" and "What problem does it solve?"</li>
+<li><strong>Use the body for more detail</strong> - If necessary, provide more detail in the body of the commit message. This can include a description of the changes made, any relevant information about the code or files modified, and any necessary instructions for other developers.</li>
+<li><strong>Follow any guidelines set by the project</strong> - Some projects may have specific guidelines or conventions for writing commit messages. Make sure to follow any guidelines set by the project to ensure consistency and clarity.
+</li>
+</ol>
+<p>[!info] Fixing (or) amending the last commit
+Sometimes, a change needs to be done on the last commit. This could be due to accidentally missing file(s) or typos in the commit messages and so on. The amend flag to the <code>git commit</code> command performs the redo of the previous commit. Before running a commit with the <code>amend</code> flag, changes can be made to the codebase to correct the mistakes performed in the previous commit if required.</p>
+<p>After the changes are made, when ready to perform the commit, the command, <code>git commit</code> is run with <code>amend</code> flag as <code>git commit --amend</code>. Now git opens the commit message for the commit in the default text editor configured. By default, git uses <code>vim</code> as the text editor of choice. Now, the necessary changes can be made to the commit messages. By default, the previous commit messages are taken as the base, allowing changes to be made when committing.</p>
+</blockquote>
+<h3 id="getting-the-history-log-of-previous-commits">Getting the history (log) of previous commits</h3>
+<p>To know the commit history of a git repository, the <code>git log</code> command can be used. By default, a git log command returns the following 4 pieces of information.</p>
+<ol>
+<li><strong>Commit hash and branch information</strong> - Hash (digital uniquely identifying string of characters) uniquely identifies the commit and the branch information lets the user know which repository, branch and location the commit was made to.</li>
+<li><strong>Author</strong> - Shows the author who made the commit.</li>
+<li><strong>Timestamp</strong> - Shows when the commit was performed.</li>
+<li><strong>Commit Message</strong> - Shows the message provided by the commit author when performing the commit.</li>
+</ol>
+<p><strong>Command:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>git<span class="w"> </span>log
+</code></pre></div>
+<p><strong>Command Output (Example)</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>commit e5a5f55a235c5d2f9a4e4de4d41fa71a1a07c51f (HEAD -&gt; master, origin/master)
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>Author: John Doe &lt;johndoe@example.com&gt;
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>Date:   Fri May 7 14:30:15 2021 -0400
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>    Add new feature
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>commit 0123456789abcdef0123456789abcdef01234567
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>Author: Jane Smith &lt;janesmith@example.com&gt;
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>Date:   Wed May 5 10:45:32 2021 -0400
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>    Update documentation
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a>
+<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a>commit 9876543210fedcba9876543210fedcba98765432
+<a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a>Author: John Doe &lt;johndoe@example.com&gt;
+<a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a>Date:   Mon May 3 16:20:49 2021 -0400
+<a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a>
+<a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a>    Initial commit
+</code></pre></div>
+<h3 id="ignoring-files-and-directories">Ignoring files and directories</h3>
+<p>A <code>gitignore</code> is a configuration file used to specify git to ignore files and folder when tracking changes in a repository. </p>
+<p>This is useful in cases where these files and folders are log files, secrets, build artifacts, lock files or binary files. These files might be changing frequently or can be generated by the end-user whenever required, and hence hold no value to be tracked by git.</p>
+<p>Setting up an appropriate <code>gitignore</code> file aids in maintenance of a cleaner, more manageable and less cluttered. </p>
+<p>Following are some of the important questions and their corresponding workflows to keep in mind when working with <code>.gitignore</code> files. </p>
+<ol>
+<li><strong>What file and file format is the <code>.gitignore</code> file</strong> - <code>gitignore</code> files are created as <code>.gitignore</code> (without extension) files.</li>
+<li><strong>Where to place the file?</strong> - <code>gitignore</code> files are usually created at the root of the repository.</li>
+<li><strong>What if I place the <code>.gitignore</code> file in a sub-directory?</strong> - If a <code>.gitignore</code> file is placed in a child directory to the root directory of the git repository, git uses that <code>.gitignore</code> file to ignore files in that particular directory specifically. Tt is to be noted that a <code>gitignore</code> file at a directory is applicable only to that directory and its children and not to its parents or siblings.</li>
+<li><strong>Okay, so what is the best practice for <code>.gitignore</code> files?</strong> - It is recommended to not have multiple <code>.gitignore</code> files per repository to avoid conflicts and complexity. Also, when a repository is collaboratively maintained, it is important that all the collaborators  have the same <code>.gitignore</code> file, to avoid ignore conflicts.</li>
+<li><strong>Is the <code>.gitignore</code> file tracked by git?</strong> - Yes, <code>.gitignore</code> files must be tracked by git in order for git to ignore files and folders as per the instructions stated.</li>
+<li><strong>What if a new file/folder to be ignored is added to the <code>.gitignore</code> file after it is being tracked by git?</strong> - Once git starts tracking a particular file/folder, git will continue tracking the file even after the <code>.gitignore</code> file is modified to ignore the file/folder. In order to remove the file from git actively tracking the file/folder, there are two options<ul>
+<li><em>Remove the file/folder from the repository</em> - This process completely deletes the file or folder that needs to be stopped being tracked. This can be done using <code>git rm &lt;file&gt;</code> command. Post this command, the file will be removed from git's tracking as well from the repository.</li>
+<li><em>Remove the file/folder from git tracking only</em> - This removes the file/folder that needs to be stopped being tracked from git's tracking. This can be done using <code>git rm --cached &lt;file&gt;</code> command. Post this command, the file will be removed from git's tracking, but will remain in the repository.</li>
+</ul>
+</li>
+<li><strong>How to specify files/folders for ignoring?</strong> - <code>.gitignore</code> accepts files and folders as individual entities as well as with wildcard characters. The following snippet captures some of the common formats and sequences followed when ignoring files and folders in git repositories. </li>
+</ol>
+<div class="highlight"><span class="filename">Commonly used gitignore formats</span><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a># ignore a specific file
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>some-file.txt
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a># ignore all files with a specific extension
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>*.log 
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a># ignore a specific directory
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>my-directory/
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a># ignore directories with a certain name
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>**/log-files
+<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a>
+<a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a># ignore all files and sub-directories in a directory
+<a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a>logs/**
+<a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a>
+<a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a># ignore specific files in a directory and its sub-directories
+<a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a>logs/*.log
+<a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a>
+<a id="__codelineno-12-19" name="__codelineno-12-19" href="#__codelineno-12-19"></a># ignore files that match a pattern (rule negation)
+<a id="__codelineno-12-20" name="__codelineno-12-20" href="#__codelineno-12-20"></a>*.log
+<a id="__codelineno-12-21" name="__codelineno-12-21" href="#__codelineno-12-21"></a>!important.log
+</code></pre></div>
+<h3 id="branching">Branching</h3>
+<p>In git, branching refers to the creation of a new line of development from the existing line. Here, the line of development is referred to as branch, so called because it resembles the branches of a tree. </p>
+<p>Essentially, a branch is a pointer to a specific commit made in history, pointing to the state of the codebase at that point in time. Any file or folder in each branch, once created, can be changed, deleted, modified or added without affecting the parent branch it was created from as long as the author of those commits wishes to keep them separate. Essentially, commits in each branch are independent of other branches.</p>
+<p>Once the author decides to carry over the changes to the parent branch, an operation called as merging can be done.</p>
+<p>Git always operates in a branch. Unless changed, git creates a default branch by the name <code>master</code> or <code>main</code> whenever a new repository is created with <code>git init</code>. </p>
+<blockquote>
+<p>[!info] Master v Main
+<code>master</code> and <code>main</code> are both used as names for the default branch created by git when initializing a repository. While any name is allowed to be set as the default name, these two are in common use.</p>
+<p>Over time, the name of the default branch has evolved. Several community members found the term <code>master</code> being associated with slavery and racism. Hence they advocated and started using a better term, <code>main</code> as the default branch name. </p>
+<p>Git works no matter what name is set as the default branch name, and the preference ultimately needs to be set by the owner of the repository or governing principles in case of an organization or an open-source project team.</p>
+<p>To set or change the default branch name, use the <code>git config</code> command by supplying the new name for the branch. Reference snippet is provided below.</p>
+<div class="highlight"><span class="filename">set/change global branch name configuration</span><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>init.defaultBranch<span class="w"> </span>main
+</code></pre></div>
+<p>[!info] What is the HEAD?
+In git, <strong>HEAD</strong> is a reference to the current commit in a repository, pointing to the tip of the current branch where the most recent commit was made on that branch. In simpler terms, HEAD is a pointer to the last commit of the current branch.<br />
+</p>
+</blockquote>
+<p>The <code>git branch</code> command is extensively used to manipulate branches. Following are some of the most common implementations of the <code>git branch</code> command.</p>
+<div class="highlight"><span class="filename">git branch command implementations</span><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="c1"># list all local branches</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>git<span class="w"> </span>branch
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="c1"># list all remote branches</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>git<span class="w"> </span>branch<span class="w"> </span>-r
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="c1"># list both local and remote branches</span>
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>git<span class="w"> </span>branch<span class="w"> </span>-a
+<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>
+<a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="c1"># show SHA-1 commit ID </span>
+<a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a>git<span class="w"> </span>branch<span class="w"> </span>-v
+<a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a>
+<a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a><span class="c1"># rename a branch (HEAD on the branch)</span>
+<a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a>git<span class="w"> </span>branch<span class="w"> </span>-m<span class="w"> </span>bug-fixes
+<a id="__codelineno-14-15" name="__codelineno-14-15" href="#__codelineno-14-15"></a>
+<a id="__codelineno-14-16" name="__codelineno-14-16" href="#__codelineno-14-16"></a><span class="c1"># rename a branch - forcefully (HEAD on the branch)</span>
+<a id="__codelineno-14-17" name="__codelineno-14-17" href="#__codelineno-14-17"></a>git<span class="w"> </span>branch<span class="w"> </span>-M<span class="w"> </span>bug-fixes
+<a id="__codelineno-14-18" name="__codelineno-14-18" href="#__codelineno-14-18"></a>
+<a id="__codelineno-14-19" name="__codelineno-14-19" href="#__codelineno-14-19"></a><span class="c1"># delete a branch (HEAD on another branch)</span>
+<a id="__codelineno-14-20" name="__codelineno-14-20" href="#__codelineno-14-20"></a>git<span class="w"> </span>branch<span class="w"> </span>-d<span class="w"> </span>bug-fixed
+<a id="__codelineno-14-21" name="__codelineno-14-21" href="#__codelineno-14-21"></a>
+<a id="__codelineno-14-22" name="__codelineno-14-22" href="#__codelineno-14-22"></a><span class="c1"># delete a branch - Forcefully (HEAD on another branch)</span>
+<a id="__codelineno-14-23" name="__codelineno-14-23" href="#__codelineno-14-23"></a>git<span class="w"> </span>branch<span class="w"> </span>-D<span class="w"> </span>bug-fixed
+</code></pre></div>
+<h3 id="switching-branches">Switching branches</h3>
+<p>The command <code>git switch</code> can be used to switch from one branch to another. Both <code>git switch</code> and <code>git checkout</code> are commands that can be used to switch to new branches. </p>
+<p><code>git checkout</code> used to be the only way to change branches in older versions of git (prior to version 2.23). In newer versions of git (since version 2.23), the command <code>git switch</code> was introduced. </p>
+<p><code>git switch</code> is aimed at providing an intuitive and streamlined way of changing branches in git repositories in branching and committing.</p>
+<p>Following are some of the differences between <code>git checkout</code> and <code>git switch</code> commands.</p>
+<ol>
+<li><strong>Simplistic</strong> - <code>git switch</code> command is simpler as it takes only one argument, where <code>git checkout</code>, being able to do more complex things, is inherently more complex.</li>
+<li><strong>Less error prone</strong> - Due to its complex nature, <code>git checkout</code> command is more error-prone to the simplistic git switch command</li>
+<li><strong>Data loss protection</strong> - The <code>git switch</code> command has built-in checks to prevent data loss, when trying to switch to a different branch with uncommitted changes in the working branch, which git checkout lacks, which may lead to data loss. When trying to switch branches with uncommitted changes, the <code>git switch</code> command prompts to <code>commit</code> or <code>stash</code> the changes.</li>
+</ol>
+<p><strong>Commands:</strong></p>
+<div class="highlight"><span class="filename">git switch and git checkout to change branches</span><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="c1"># switching to a new branch with git switch</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>git<span class="w"> </span>switch<span class="w"> </span>bugfix
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="c1"># create and switch to a new branch</span>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>git<span class="w"> </span>switch<span class="w"> </span>-c<span class="w"> </span>bugfix
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="c1"># switching to a new branch with git checkout</span>
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>git<span class="w"> </span>checkout<span class="w"> </span>bugfix
+</code></pre></div>
+<h3 id="merging-branches">Merging branches</h3>
+<p>In git, merging is the process of combining changes from different branches and integrating them into a single branch. When two branches are merged, git makes a new commit that combines the changes from both the branches. </p>
+<p>By default, git manages conflicts when merging two branches and performs a new commit if necessary. To merge branches, first switch to the branch into which the changes need to be recorded (target branch) using <code>git switch</code> or <code>git checkout</code> commands. Next, merge the source branch using the git merge command.</p>
+<div class="highlight"><span class="filename">merging branches</span><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="c1"># merging a branch to the main branch (HEAD not on bug-fixed)</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>git<span class="w"> </span>merge<span class="w"> </span>bug-fixed
+</code></pre></div>
+<p>The following are some of the most commonly used types of merges in git.</p>
+<ol>
+<li><strong>Fast-forward merge</strong> - A fast-forward merge occurs when the branch you are merging into has not diverged from the branch you are merging in any way. In this case, Git can simply move the pointer of the branch you are on to the latest commit on the other branch. This type of merge is fast because it does not create a new merge commit.</li>
+<li><strong>Recursive merge</strong> - A recursive merge is the default merge strategy used by Git. It is used when the branches you are merging have diverged and cannot be fast-forwarded. Git creates a new merge commit that combines the changes from both branches. In this case, git prompts the merge author for a commit message for the new commit that arises from merging the two branches.</li>
+<li><strong>Octopus merge</strong> - An octopus merge is a type of recursive merge that allows you to merge multiple branches into a single branch at the same time. This is useful when you have several branches that you want to integrate into a single codebase.</li>
+<li><strong>Squash merge</strong> - A squash merge allows you to merge changes from a feature branch into another branch as a single commit. This can be useful if you want to keep the commit history of your main branch clean and concise.</li>
+<li><strong>Rebase merge</strong> - A rebase merge is a way of integrating changes from one branch into another by replaying the changes made in the source branch on top of the target branch. This can be useful when you want to keep the commit history linear and avoid creating merge commits.</li>
+</ol>
+<p><strong>Merge Conflicts</strong> occur in git when two branches are merged and have changes in the same file(s), that git cannot automatically merge them. This is because, git might not know which changes to keep and which changes to discard. Merge conflicts typically occur, when the same section of a file is modified in both the branches.</p>
+<p>Merge conflicts need to be manually resolved before a commit can be made. Changes in both the branches are reviewed and the appropriate content is kept, discarding the one that is not required.</p>
+<p>The following snippet shows how a merge conflict is presented to the merge author to be manually resolved.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD (Current Change) 
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>Some changes  in the existing branch
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>=======
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>Some changes that are incoming to the existing branch
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>&gt;&gt;&gt;&gt;&gt;&gt;&gt; NEW-BRANCH (Incoming Change)
+</code></pre></div>
+<p>The following are the steps to resolve a merge conflict</p>
+<ol>
+<li>Make the essential changes on the file.</li>
+<li>Remove the conflict markers</li>
+<li>Stage the file with <code>git add</code> </li>
+<li>Commit the file with <code>git commit</code></li>
+</ol>
+<p>It is important to note that merge conflicts are very time-consuming and complex especially when a lot of changes are conflicting or when multiple files are in conflict.</p>
+<p>Here are some steps to take to avoid merge conflicts</p>
+<ol>
+<li><strong>Keep the branches small</strong> - One of the main causes of merge conflicts is when multiple developers are working on the same file or section of code. To minimize the risk of conflicts, it's a good idea to break up the work into small, focused branches that only modify a few files or lines of code.</li>
+<li><strong>Pull frequently</strong> - Before starting to work on a branch, make sure to pull the latest changes from the remote repository (if applicable) to ensure that the branch is up-to-date with the latest changes made by other developers. This can help prevent conflicts that arise from changes made by other developers.</li>
+<li><strong>Communicate with the team</strong> - If changes to the same section is required and known, it's a good idea to communicate with the other developers beforehand to coordinate your efforts and avoid conflicts.</li>
+<li><strong>Use descriptive commit messages</strong> - When making a commit, make sure to use a descriptive commit message that explains what changes were made. This can help other developers understand the changes and can help prevent conflicts that arise from misunderstandings.</li>
+<li><strong>Test the changes</strong> - Before merging branches, make sure to test the changes thoroughly to ensure that they work as expected. This can help prevent conflicts that arise from bugs or errors in the code.</li>
+<li><strong>Use merge tools</strong> - There are several merge tools available that can help resolve conflicts more easily. These tools can highlight conflicting changes and allow comparing and merging the changes more easily.</li>
+</ol>
+<blockquote>
+<p>[!info] Conflict Resolution - IDE Tools
+Most IDEs come with built-in tools to handle and resolve merge conflicts. These could include, but limited to accepting the current change (from the target branch), accepting changes from the incoming branch, accepting both changes and so on. </p>
+<p>It is important to learn to use these tools that are built into these IDEs to make the process easier.</p>
+</blockquote>
+<h3 id="finding-the-difference">Finding the difference</h3>
+<p>The <code>git diff</code> command displays the differences between the two versions of a file using a unified diff format, which shows the added and removed lines in the file. The output of the command can be customized using various options and flags to change the format, scope, and level of detail of the output. <code>git diff</code> just provides information and does not alter the repository in any form (similar to <code>git log</code> and <code>git status</code>).</p>
+<p>Following section explains the general output of the git diff command and how to make sense of what each part means.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>diff --git a/Shopping-List.md b/Shopping-List.md
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>index 47e4552..08c9a76 100644
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>--- a/Shopping-List.md
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>+++ b/Shopping-List.md
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>@@ -5,3 +5,10 @@ Store: David&#39;s Store
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a> ### Monthly Shopping Items
+<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a> Get the following things each month
+<a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a>+Corn Flour
+<a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a>+Jam
+<a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a>+Chocolate Spread
+<a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a>+Noodles
+<a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a>+Rice
+<a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a>+Carrots
+<a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a>+Tomatoes
+<a id="__codelineno-18-15" name="__codelineno-18-15" href="#__codelineno-18-15"></a> Do not forget to take a bag to carry the grocery items. 
+</code></pre></div>
+<p>Some of the most common implementations of git diff are given below for reference</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="c1"># Differences between working directory and staging area</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="c1"># These are changes not staged for commit</span>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>git<span class="w"> </span>diff
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="c1"># Differences between staging area and last commit</span>
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="c1"># These are changes that staged and are yet to be committed</span>
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>git<span class="w"> </span>diff<span class="w"> </span>--staged
+<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a>git<span class="w"> </span>diff<span class="w"> </span>--cached
+<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a>
+<a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a><span class="c1"># Differences between working directory and a particular commit</span>
+<a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a><span class="c1"># This shows the changes since a particular commit</span>
+<a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a>git<span class="w"> </span>diff<span class="w"> </span>&lt;commit&gt;
+<a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a>git<span class="w"> </span>diff<span class="w"> </span>HEAD~2
+<a id="__codelineno-19-14" name="__codelineno-19-14" href="#__codelineno-19-14"></a>git<span class="w"> </span>diff<span class="w"> </span>4a23590..2c63590
+<a id="__codelineno-19-15" name="__codelineno-19-15" href="#__codelineno-19-15"></a>
+<a id="__codelineno-19-16" name="__codelineno-19-16" href="#__codelineno-19-16"></a><span class="c1"># Differences between the current branch and another branch</span>
+<a id="__codelineno-19-17" name="__codelineno-19-17" href="#__codelineno-19-17"></a><span class="c1"># This shows what changes have been made across files</span>
+<a id="__codelineno-19-18" name="__codelineno-19-18" href="#__codelineno-19-18"></a>git<span class="w"> </span>diff<span class="w"> </span>&lt;branch&gt;
+<a id="__codelineno-19-19" name="__codelineno-19-19" href="#__codelineno-19-19"></a>git<span class="w"> </span>diff<span class="w"> </span>bugfix<span class="w"> </span><span class="c1"># diff between current branch and bugfix branch</span>
+<a id="__codelineno-19-20" name="__codelineno-19-20" href="#__codelineno-19-20"></a>git<span class="w"> </span>diff<span class="w"> </span>bigfix..main
+<a id="__codelineno-19-21" name="__codelineno-19-21" href="#__codelineno-19-21"></a>git<span class="w"> </span>diff<span class="w"> </span>bigfix<span class="w"> </span>main
+<a id="__codelineno-19-22" name="__codelineno-19-22" href="#__codelineno-19-22"></a>
+<a id="__codelineno-19-23" name="__codelineno-19-23" href="#__codelineno-19-23"></a><span class="c1"># NOTE: All these changes can be directed towards a specific file</span>
+<a id="__codelineno-19-24" name="__codelineno-19-24" href="#__codelineno-19-24"></a>git<span class="w"> </span>diff<span class="w"> </span>HEAD<span class="w"> </span>feature.js
+<a id="__codelineno-19-25" name="__codelineno-19-25" href="#__codelineno-19-25"></a>git<span class="w"> </span>diff<span class="w"> </span>HEAD<span class="w"> </span>feature.js<span class="w"> </span>app.js
+</code></pre></div>
+<h3 id="stashing-the-changes">Stashing the changes</h3>
+<p>Stashing is the process of temporarily saving changes in a repository into a stash, without committing those changes. This returns a clean working directory, where the it leaves room for other operations such as branch switching, committing other changes and so on. </p>
+<p>The <code>git stash</code> command is used to perform stashing. Following are some of the most commonly used stashing operations.</p>
+<ol>
+<li><strong>Stash Changes</strong> - To stash current changes, run <code>git stash save</code> or simply <code>git stash</code>. This will save both the modified and staged files in a new stash.</li>
+<li><strong>View Stashes</strong> - To view a list of all available stashes, run <code>git stash list</code>. It will display the stash index number, description, and the branch where the stash was created.</li>
+<li><strong>Apply Stash</strong> - To apply the most recent stash and restore the changes to the working directory, run <code>git stash apply</code>. This will merge the changes from the stash into the current branch.</li>
+<li><strong>Apply Specific Stash</strong> - If multiple stashes exist, a specific stash can be applied by specifying its index number, such as <code>git stash apply stash@{2}</code>. The stash number can be obtained via the <code>git stash list</code> command.</li>
+<li><strong>Drop Stash</strong> - When a stash is no longer needed, it can be removed from the stash stack using <code>git stash drop stash@{1}</code>. This action cannot be undone.</li>
+<li><strong>Pop Stash</strong> - To apply the most recent stash and remove it from the stash stack in one step, run <code>git stash pop</code>.</li>
+<li><strong>Clear the stash</strong> - To clear out the entire stash, run <code>git stash clear</code>.</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="c1"># Save a stash with description</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>git<span class="w"> </span>stash<span class="w"> </span>save<span class="w"> </span><span class="s2">&quot;Boss asked me to switch branches&quot;</span>
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="c1"># View all stashes</span>
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>git<span class="w"> </span>stash<span class="w"> </span>list
+<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a>
+<a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="c1"># Apply the most recent stash to the working directory</span>
+<a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a>git<span class="w"> </span>stash<span class="w"> </span>apply
+<a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a>
+<a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a><span class="c1"># Apply a specific stash to the working directory</span>
+<a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a>git<span class="w"> </span>stash<span class="w"> </span>apply<span class="w"> </span>stash@<span class="o">{</span><span class="m">2</span><span class="o">}</span>
+<a id="__codelineno-20-12" name="__codelineno-20-12" href="#__codelineno-20-12"></a>
+<a id="__codelineno-20-13" name="__codelineno-20-13" href="#__codelineno-20-13"></a><span class="c1"># Remove/delete a specific stash</span>
+<a id="__codelineno-20-14" name="__codelineno-20-14" href="#__codelineno-20-14"></a>git<span class="w"> </span>stash<span class="w"> </span>drop<span class="w"> </span>stash@<span class="o">{</span><span class="m">3</span><span class="o">}</span>
+<a id="__codelineno-20-15" name="__codelineno-20-15" href="#__codelineno-20-15"></a>
+<a id="__codelineno-20-16" name="__codelineno-20-16" href="#__codelineno-20-16"></a><span class="c1"># Apply and remove the most recent stash</span>
+<a id="__codelineno-20-17" name="__codelineno-20-17" href="#__codelineno-20-17"></a>git<span class="w"> </span>stash<span class="w"> </span>pop
+<a id="__codelineno-20-18" name="__codelineno-20-18" href="#__codelineno-20-18"></a>
+<a id="__codelineno-20-19" name="__codelineno-20-19" href="#__codelineno-20-19"></a><span class="c1"># Apply and remove a specific stash</span>
+<a id="__codelineno-20-20" name="__codelineno-20-20" href="#__codelineno-20-20"></a>git<span class="w"> </span>stash<span class="w"> </span>pop<span class="w"> </span>stash@<span class="o">{</span><span class="m">2</span><span class="o">}</span>
+</code></pre></div>
+<p><strong>Note</strong> - It is possible to save a stash in one branch and then <code>git stash apply</code> or <code>git stash pop</code>  them in another branch. This is done by making changes in a branch, stashing them, switching to another branch with <code>git switch &lt;branch&gt;</code>, then running <code>git stash apply</code> or <code>git stash pop</code> .</p>
+<h3 id="checking-out-an-old-commit">Checking out an old commit</h3>
+<p>To checkout the state of the repository at a specific commit's point in time, the <code>git checkout</code> command can be used along with the commit identifier such as the commit hash.</p>
+<p>When an older commit is checked out, git enters what is called as a <strong>detached HEAD</strong> state. In this state, git allows the user to explore the codebase of the repository at that point in time and facilitates making changes if needed. This basically moves the HEAD to that specific commit, where usually HEAD refers to a branch and not a specific commit.</p>
+<p>The following outline specifies the workflow for working with older commits.</p>
+<ol>
+<li><strong>Checking out an old commit</strong> - To checkout an older commit, a commit identifier such as the commit hash (at least first 7 characters) must be known. With the identifier information, use the <code>git checkout &lt;commit_identifier&gt;</code> command. Now, git moves the HEAD to that specific commit and enters the detached HEAD state.</li>
+<li><strong>Detached HEAD state</strong> - The state so called, as HEAD usually refers to an entire branch and not a single commit is when the HEAD points to the commit of interest. Any changes made in this state will not be associated with a branch.</li>
+<li><strong>Inspecting commit and making changes</strong> - Any changes made at this point will not be associated to a branch and will be lost unless saved specifically. To save the changes, a new branch can be created at the current commit level.</li>
+<li><strong>Returning to a branch</strong> - To return to a branch or create a new branch, the <code>git checkout</code> command can be used with the reference to the branch name.</li>
+<li><strong>Re-attaching the HEAD</strong> - Once the HEAD moves to a specific branch, the HEAD is said to be in attached state once again as it goes back to referencing a branch rather than a commit when it first detached while checking out an older commit.</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="c1"># Checking out an older commit</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>git<span class="w"> </span>checkout<span class="w"> </span>4e237h5
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="c1"># Detached HEAD state</span>
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a>
+<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="c1"># Inspecting commit and making changes</span>
+<a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a>
+<a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a><span class="c1"># Attaching HEAD / Returning to a branch</span>
+<a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a>git<span class="w"> </span>checkout<span class="w"> </span>main
+</code></pre></div>
+<h3 id="discarding-changes">Discarding changes</h3>
+<p>If changes made after a commit is to be discarded, the command <code>git checkout</code> can be used. This reverts the state of the repository to the commit specified in the command. Doing this will remove all the changes that were made after the last commit.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="c1"># Discarding changes from a specific file (Method 1)</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>git<span class="w"> </span>checkout<span class="w"> </span>HEAD<span class="w"> </span>fruits.txt
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="c1"># Discarding changes from all files (Method 1)</span>
+<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a>git<span class="w"> </span>checkout<span class="w"> </span>HEAD<span class="w"> </span>.
+<a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a>
+<a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="c1"># Discarding changes from a specific file (Method 2)</span>
+<a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a>git<span class="w"> </span>checkout<span class="w"> </span>--<span class="w"> </span>fruits.txt<span class="w"> </span>veggies.txt
+<a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a>
+<a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a><span class="c1"># Discarding changes from all files (Method 2)</span>
+<a id="__codelineno-22-11" name="__codelineno-22-11" href="#__codelineno-22-11"></a>git<span class="w"> </span>checkout<span class="w"> </span>--<span class="w"> </span>.
+</code></pre></div>
+<p>Another command that can be used to perform the discarding of the changes since a commit is <code>git restore</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="c1"># Discarding changes from a specific file</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>git<span class="w"> </span>restore<span class="w"> </span>fruits.txt
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>
+<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="c1"># Discarding changes from all files</span>
+<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a>git<span class="w"> </span>restore<span class="w"> </span>.
+<a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a>
+<a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a><span class="c1"># Reverting state to a specific commit for specific files</span>
+<a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a>git<span class="w"> </span>restore<span class="w"> </span>--source<span class="w"> </span>HEAD~2<span class="w"> </span>fruits.txt
+<a id="__codelineno-23-9" name="__codelineno-23-9" href="#__codelineno-23-9"></a>
+<a id="__codelineno-23-10" name="__codelineno-23-10" href="#__codelineno-23-10"></a><span class="c1"># Reverting state to a specific commit for all files</span>
+<a id="__codelineno-23-11" name="__codelineno-23-11" href="#__codelineno-23-11"></a>git<span class="w"> </span>restore<span class="w"> </span>--source<span class="w"> </span>HEAD~2<span class="w"> </span>.
+</code></pre></div>
+<p>Note that following the <code>git checkout</code> and <code>git restore</code> commands to discard changes removes the uncommitted changes from the repository, thus using them with caution is recommended.</p>
+<h3 id="un-staging-changes">Un-staging changes</h3>
+<p>If the aim is just to un-stage the changes made in a repository, there-by keeping all the files in which the changes were made, again the <code>git restore</code> command can be used with the <code>--staged</code> flag.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="c1"># Unstaging changes to a specific file</span>
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>git<span class="w"> </span>restore<span class="w"> </span>--staged<span class="w"> </span>fruits.txt
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>
+<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="c1"># Unstaging changes to all files</span>
+<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a>git<span class="w"> </span>restore<span class="w"> </span>--staged<span class="w"> </span>.
+</code></pre></div>
+<p>The same functionality, of removing the staged files can be done with the command <code>git reset</code> as well. The <code>git reset</code> command with the flag <code>--</code> un-stages the changes made to the repository that is not committed. </p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="c1"># Un-staging all changes and revert to the previous commit</span>
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>git<span class="w"> </span>reset<span class="w"> </span>--
+</code></pre></div>
+<p>It is to be notes that the git reset command works at the scope of a commit history, and thus will not allow to reset only one file. To un-stage the changes in one single file, use the <code>git restore</code> command. </p>
+<p>Note that running the git reset command without the -- flag behaves differently, and performs an undo on the last commit.</p>
+<h3 id="undoing-commits">Undoing commits</h3>
+<p>Sometimes, the commits made to a branch might have to be undone for various reasons. For this purpose, the <code>git reset</code> command can be used.</p>
+<p>The <code>git reset</code>  command is commonly specified with one of 3 flags, namely</p>
+<ol>
+<li><strong>Soft Reset with <code>--soft</code></strong> - Reverts back the branch pointer to a commit, but preserves the changes in the staging area. Changes in the working directory and staging area are preserved. </li>
+<li><strong>Mixed Reset with <code>--mixed</code></strong> - This is the default option, when no flag is specified. Reverts back the branch pointer to a commit, and matches the staging area to the commit. Changes in the working directory are preserved.</li>
+<li><strong>Hard Reset with <code>--hard</code></strong> - Reverts back the branch pointer to a commit. This discards any and all changes to the working directory and the staging area. Needless to say, care must be taken before performing this action, as all changes will be lost.</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="c1"># Soft Reset - Preserve changes in working directory &amp; staging area</span>
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>git<span class="w"> </span>reset<span class="w"> </span>--soft<span class="w"> </span>423a145
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>
+<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a><span class="c1"># Mixed Reset - Preserve changes in working directory</span>
+<a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a>git<span class="w"> </span>reset<span class="w"> </span>--mixed<span class="w"> </span>423a145
+<a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a>
+<a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a><span class="c1"># Mixed Reset - DOES NOT PRESERVE CHANGES</span>
+<a id="__codelineno-26-8" name="__codelineno-26-8" href="#__codelineno-26-8"></a>git<span class="w"> </span>reset<span class="w"> </span>--hard<span class="w"> </span>423a145
+<a id="__codelineno-26-9" name="__codelineno-26-9" href="#__codelineno-26-9"></a>
+<a id="__codelineno-26-10" name="__codelineno-26-10" href="#__codelineno-26-10"></a><span class="c1"># NOTE: Also accepts dynamic HEAD pointers</span>
+<a id="__codelineno-26-11" name="__codelineno-26-11" href="#__codelineno-26-11"></a>git<span class="w"> </span>reset<span class="w"> </span>423a145<span class="w"> </span>HEAD~2
+</code></pre></div>
+<h3 id="reverting-commits">Reverting commits</h3>
+<p>The command <code>git revert</code> is used to create a new commit that sets the state of the repository as per a previous commit. This allows to safely revert/undo a commit while preserving the commit history.</p>
+<p>Here, a new commit is made that reverses the changes made in the specified commit. This ensures that the commit history remains intact and that the original commit is not removed or modified. </p>
+<p>Here are some key pointers when it comes to git revert</p>
+<ul>
+<li>It creates a new commit, so the commit history is preserved.</li>
+<li>It's a safe way to undo changes, especially in shared repositories where you don't want to modify the existing history.</li>
+<li>It can revert a single commit or a range of commits</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="c1"># Revert to a previous commit</span>
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>git<span class="w"> </span>revert<span class="w"> </span>423a145
+</code></pre></div>
+<p>It is important to note that the command <code>git revert</code> functions at the commit level and will not be able to revert a specific file. To revert specific changes within a commit, other git commands such as <code>git cherry-pick</code>, <code>git reset</code> or interactive rebase via <code>git rebase -i</code> shall be used.</p>
+<p>However it is to be noted that, <code>git revert</code> can introduce conflicts if the changes being reverted conflict with the subsequent changes. Thus, it is recommended to review the changes and test the reverted state before sharing the code to a shared repository. </p>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var tab,labels=set.querySelector(".tabbed-labels");for(tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Back to top
+          </button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2023 <a href="https://github.com/PatrickAmbrosso"  target="_blank" rel="noopener">Patrick Ambrose (PatrickAmbrosso)</a>
+
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+    <a href="mailto:patrickambrosericky@gmail.com" target="_blank" rel="noopener" title="Mail Patrick Ambrose" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4l217.6 163.2c11.4 8.5 27 8.5 38.4 0l217.6-163.2c12.1-9.1 19.2-23.3 19.2-38.4 0-26.5-21.5-48-48-48H48zM0 176v208c0 35.3 28.7 64 64 64h384c35.3 0 64-28.7 64-64V176L294.4 339.2a63.9 63.9 0 0 1-76.8 0L0 176z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://www.instagram.com/patrickambrosso/" target="_blank" rel="noopener" title="Patrick&#39;s Instagram Profile" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://github.com/PatrickAmbrosso" target="_blank" rel="noopener" title="Patrick&#39;s GitHub Profile" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://twitter.com/PatrickAmbrosso" target="_blank" rel="noopener" title="Patrick&#39;s Twitter Profile" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://www.linkedin.com/in/PatrickAmbrosso/" target="_blank" rel="noopener" title="Patrick&#39;s LinkedIn Profile" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.instant", "navigation.path", "navigation.top", "toc.follow", "search.suggest", "search.highlight", "content.tooltips", "content.tabs.link", "content.code.annotation", "content.code.copy"], "search": "../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c2be25ad.min.js"></script>
+      
+        <script src="../../Javascripts/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="../../js/open_in_new_tab.js"></script>
+      
+    
+  </body>
+</html>
